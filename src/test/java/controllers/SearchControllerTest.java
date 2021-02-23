@@ -10,13 +10,24 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Test class for the test about the /search url
+ *
+ * @Autor Ana Garcia
+ */
 @MicronautTest
 public class SearchControllerTest {
 
+    /**
+     * "Client" that will navigate through the page and do the tests
+     */
     @Inject
     @Client("/")
     RxHttpClient client;
 
+    /**
+     * Test to see if a correct request is correctly handled
+     */
     @Test
     public void testSearch(){
         HttpRequest<String> request = HttpRequest.GET("/search?query=prueba");
