@@ -11,19 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MicronautTest
-public class HelloControllerTest {
+public class SearchControllerTest {
 
     @Inject
     @Client("/")
     RxHttpClient client;
 
     @Test
-    public void testHello(){
-        HttpRequest<String> request = HttpRequest.GET("/hello");
+    public void testSearch(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=prueba");
         String body = client.toBlocking().retrieve(request);
 
         assertNotNull(body);
-        assertEquals("Hello World",body);
+        assertEquals("{\n\"query\":\"prueba\",\n\"cluster_name\":\"7.11.1\"\n}",body);
     }
 
 }
