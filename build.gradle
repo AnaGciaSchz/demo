@@ -27,6 +27,7 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.elasticsearch:micronaut-elasticsearch")
     runtimeOnly("ch.qos.logback:logback-classic")
+    compile 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.11.1'
 }
 
 

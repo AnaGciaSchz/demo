@@ -23,7 +23,7 @@ public class SearchControllerTest {
         String body = client.toBlocking().retrieve(request);
 
         assertNotNull(body);
-        assertEquals("{\n\"query\":\"prueba\",\n\"cluster_name\":\"7.11.1\"\n}",body);
+        assertEquals("{\n\"query\":\"prueba\",\n\"cluster_name\":\"docker-cluster 7.11.1\"\n}",body);
     }
 
 }
