@@ -6,6 +6,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 
 /**
@@ -13,6 +14,7 @@ import java.io.IOException;
  *
  * @Autrhor Ana Garcia
  */
+@Singleton
 public class ElasticSearchUtils {
 
     private static RestHighLevelClient client;
@@ -50,6 +52,15 @@ public class ElasticSearchUtils {
             e.printStackTrace();
         }
         return response;
+    }
+
+    /**
+     * Method to return the name of the cluster of a Mainresponse an the elasticSearchVersion
+     * @param response MainResponse
+     * @return String with the name and the version
+     */
+    public static String getClusterNameAndVersion(MainResponse response){
+        return response.getClusterName()+" "+response.getVersion().getNumber();
     }
 
 

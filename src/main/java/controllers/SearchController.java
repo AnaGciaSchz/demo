@@ -8,6 +8,8 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
 import org.elasticsearch.client.core.MainResponse;
 
+import javax.inject.Inject;
+
 /**
  * Controller that answers to the petition or the /search url
  *
@@ -16,6 +18,7 @@ import org.elasticsearch.client.core.MainResponse;
 @Controller("/search")
 public class SearchController {
 
+    @Inject
     ElasticSearchUtils elasticUtils;
 
     /**
@@ -43,7 +46,7 @@ public class SearchController {
      * @return a JSON with the query and the cluster name and version of elasticSearch
      */
     private HttpResponse getOkHttpResponse(MainResponse response, String query){
-        String clusterVersion = response.getClusterName()+" "+response.getVersion().getNumber();
+        String clusterVersion = elasticUtils.getClusterNameAndVersion(response);
 
         return HttpResponse.ok().body("{\n\"query\":\"" + query+"\",\n" +
                 "\"cluster_name\":\""+clusterVersion+"\"\n}");
