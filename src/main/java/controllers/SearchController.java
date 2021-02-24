@@ -1,12 +1,13 @@
 package controllers;
 
-import utils.ElasticSearchUtils;
-import io.micronaut.http.HttpResponse;
+import utils.ElasticSearchQueryUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
 import org.elasticsearch.client.core.MainResponse;
+import utils.ElasticSearchUtilsInterface;
+import utils.SearchQueryJson;
 
 import javax.inject.Inject;
 
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 public class SearchController {
 
     @Inject
-    ElasticSearchUtils elasticUtils;
+    ElasticSearchUtilsInterface elasticUtils;
 
     /**
      * Method that answers the /search url that has a "query" param.
@@ -28,7 +29,7 @@ public class SearchController {
      * @return A JSON response
      */
     @Get(produces = MediaType.APPLICATION_JSON)
-    public HttpResponse index(@QueryValue String query) {
+    public SearchQueryJson index(@QueryValue String query) {
 
         //Elasticsearch
         MainResponse response = elasticUtils.getElasticClientResponse(elasticUtils.getClientInstance());
@@ -36,7 +37,7 @@ public class SearchController {
         if (response !=null){
             return getOkHttpResponse(response, query);
         }
-        return HttpResponse.notFound();
+        return new SearchQueryJson(null,null);
     }
 
     /**
@@ -45,11 +46,22 @@ public class SearchController {
      * @param query the url parameter
      * @return a JSON with the query and the cluster name and version of elasticSearch
      */
-    private HttpResponse getOkHttpResponse(MainResponse response, String query){
-        String clusterVersion = elasticUtils.getClusterNameAndVersion(response);
+    private SearchQueryJson getOkHttpResponse(MainResponse response, String query){
+        String clusterVersion = getClusterNameAndVersion(response);
 
-        return HttpResponse.ok().body("{\n\"query\":\"" + query+"\",\n" +
-                "\"cluster_name\":\""+clusterVersion+"\"\n}");
+        return new SearchQueryJson(query, clusterVersion);
+
+        //return HttpResponse.ok().body("{\n\"query\":\"" + query+"\",\n" +
+           //     "\"cluster_name\":\""+clusterVersion+"\"\n}");
+    }
+
+    /**
+     * Method to return the name of the cluster of a Mainresponse an the elasticSearchVersion
+     * @param response MainResponse
+     * @return String with the name and the version
+     */
+    private static String getClusterNameAndVersion(MainResponse response){
+        return response.getClusterName()+" "+response.getVersion().getNumber();
     }
 
 }
