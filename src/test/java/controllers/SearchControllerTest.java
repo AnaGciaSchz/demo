@@ -39,12 +39,50 @@ public class SearchControllerTest {
     }
 
     /**
-     * Test to see if a request with no query parametes produces the correct exception
+     * Test to see if a request with no query parameter produces the correct exception
      */
     @Test
     public void testNoQueryParameter(){
         try {
             HttpRequest<String> request = HttpRequest.GET("/search");
+        }
+        catch(HttpClientResponseException e) {
+            assertEquals("Required QueryValue [query] not specified", e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test to see if a request with an empty query parameter like "/search?query=" produces the correct exception
+     */
+    @Test
+    public void testEmptyQueryParameterWithEqual(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=");
+        String body = client.toBlocking().retrieve(request);
+
+        assertNotNull(body);
+        assertEquals("{\"cluster_name\":\"docker-cluster 7.11.1\"}",body);
+    }
+
+    /**
+     * Test to see if a request with an empty query parameter like "/search?query" produces the correct exception
+     */
+    @Test
+    public void testEmptyQueryParameterWithoutEqual(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query");
+        String body = client.toBlocking().retrieve(request);
+
+        assertNotNull(body);
+        assertEquals("{\"cluster_name\":\"docker-cluster 7.11.1\"}",body);
+    }
+
+    /**
+     * Test to see if a request with an empty query parameter like "/search?" produces the correct exception
+     */
+    @Test
+    public void testEmptyQueryParameterJustInterrogation(){
+        try {
+            HttpRequest<String> request = HttpRequest.GET("/search?");
         }
         catch(HttpClientResponseException e) {
             assertEquals("Required QueryValue [query] not specified", e.getMessage());
