@@ -1,13 +1,13 @@
 package controllers;
 
-import utils.ElasticSearchQueryUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
 import org.elasticsearch.client.core.MainResponse;
-import utils.ElasticSearchUtilsInterface;
-import utils.SearchQueryJson;
+import utils.elasticSearch.ElasticSearchUtilsInterface;
+import jsonManaging.SearchQueryJson;
+import utils.elasticSearch.mainResponse.MainResponseUtilsInterface;
 
 import javax.inject.Inject;
 
@@ -21,6 +21,9 @@ public class SearchController {
 
     @Inject
     ElasticSearchUtilsInterface elasticUtils;
+
+    @Inject
+    MainResponseUtilsInterface mainResponseUtils;
 
     /**
      * Method that answers the /search url that has a "query" param.
@@ -47,21 +50,9 @@ public class SearchController {
      * @return a JSON with the query and the cluster name and version of elasticSearch
      */
     private SearchQueryJson getOkHttpResponse(MainResponse response, String query){
-        String clusterVersion = getClusterNameAndVersion(response);
+        String clusterVersion = mainResponseUtils.getClusterNameAndVersion(response);
 
         return new SearchQueryJson(query, clusterVersion);
-
-        //return HttpResponse.ok().body("{\n\"query\":\"" + query+"\",\n" +
-           //     "\"cluster_name\":\""+clusterVersion+"\"\n}");
-    }
-
-    /**
-     * Method to return the name of the cluster of a Mainresponse an the elasticSearchVersion
-     * @param response MainResponse
-     * @return String with the name and the version
-     */
-    private static String getClusterNameAndVersion(MainResponse response){
-        return response.getClusterName()+" "+response.getVersion().getNumber();
     }
 
 }

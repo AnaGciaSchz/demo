@@ -1,4 +1,4 @@
-package utils;
+package jsonManaging;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

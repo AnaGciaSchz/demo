@@ -1,4 +1,4 @@
-package utils;
+package utils.elasticSearch;
 
 import io.micronaut.context.annotation.Primary;
 import org.apache.http.HttpHost;
@@ -11,8 +11,7 @@ import javax.inject.Singleton;
 import java.io.IOException;
 
 /**
- * Class that has methods to deal with the Business logic related to ElasticSearch in
- * the SearchController
+ * Class that has methods to deal with some ElasticSearch functions
  *
  * @Autrhor Ana Garcia
  */
