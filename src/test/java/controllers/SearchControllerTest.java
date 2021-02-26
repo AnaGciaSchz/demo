@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Test class for the test about the /search url
  *
- * @Autor Ana Garcia
+ * @Author Ana Garcia
  */
 @MicronautTest
 public class SearchControllerTest {
@@ -44,7 +44,7 @@ public class SearchControllerTest {
     @Test
     public void testNoQueryParameter(){
         try {
-            HttpRequest<String> request = HttpRequest.GET("/search");
+            HttpRequest.GET("/search");
         }
         catch(HttpClientResponseException e) {
             assertEquals("Required QueryValue [query] not specified", e.getMessage());
@@ -82,7 +82,7 @@ public class SearchControllerTest {
     @Test
     public void testEmptyQueryParameterJustInterrogation(){
         try {
-            HttpRequest<String> request = HttpRequest.GET("/search?");
+            HttpRequest.GET("/search?");
         }
         catch(HttpClientResponseException e) {
             assertEquals("Required QueryValue [query] not specified", e.getMessage());

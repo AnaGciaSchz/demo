@@ -15,7 +15,7 @@ import java.io.IOException;
  * Class with the business logic necessary for the
  * SearchQueryController that answers to the petition or the /search url
  *
- * @Autor Ana Garcia
+ * @Author Ana Garcia
  */
 @Primary
 public class SearchQuery implements JsonComponent {

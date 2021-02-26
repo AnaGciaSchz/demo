@@ -3,7 +3,7 @@ package utils.elasticSearch.mainResponse;
 import org.elasticsearch.client.core.MainResponse;
 
 /**
- * Interface to represent a class that has methots to deal with MainResponse objects
+ * Interface to represent a class that has methods to deal with MainResponse objects
  *
  * @Author Ana Garcia
  */

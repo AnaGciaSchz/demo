@@ -1,8 +1,5 @@
 package utils.elasticSearch;
 
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.client.RxHttpClient;
-import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Test class for the test about the ElasticSearch functionality
  *
- * @Autor Ana Garcia
+ * @Author Ana Garcia
  */
 @MicronautTest
 public class ElasticSearchUtilsTest {

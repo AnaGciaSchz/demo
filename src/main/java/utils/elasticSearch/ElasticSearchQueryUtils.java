@@ -43,16 +43,16 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
      * @return MainResponse
      */
      public MainResponse getElasticClientResponse() throws IOException {
-        MainResponse response = null;
+        MainResponse response;
 
             //Using getClientInstance to make sure I have a client at this point
-            response = getClientInstance().info(RequestOptions.DEFAULT);
+         response = getClientInstance().info(RequestOptions.DEFAULT);
 
         return response;
     }
 
     /**
-     * Method to close the client when the contex is closed to free the resources.
+     * Method to close the client when the context is closed to free the resources.
      */
     @PreDestroy
     public void close() {
@@ -60,7 +60,7 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
             client.close();
         }
         catch(IOException e){
-            e.printStackTrace();
+            System.out.println("Problem closing the connection"); //This should be written in a log
         }
     }
 

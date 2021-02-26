@@ -12,7 +12,7 @@ import javax.inject.Inject;
 /**
  * Controller that answers to the petition or the /search url
  *
- * @Autor Ana Garcia
+ * @Author Ana Garcia
  */
 @Controller("/search")
 public class SearchController {
