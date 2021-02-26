@@ -2,7 +2,10 @@ package jsonManaging;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Produces;
 
+@Produces(MediaType.APPLICATION_JSON)
 public class SearchQueryJson {
 
     private final String query;

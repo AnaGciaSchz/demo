@@ -1,9 +1,11 @@
 package controllers;
 
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.hateoas.JsonError;
 import org.elasticsearch.client.core.MainResponse;
 import utils.elasticSearch.ElasticSearchUtilsInterface;
 import jsonManaging.SearchQueryJson;
@@ -40,6 +42,7 @@ public class SearchController {
         if (response !=null){
             return getOkHttpResponse(response, query);
         }
+
         return new SearchQueryJson(null,null);
     }
 

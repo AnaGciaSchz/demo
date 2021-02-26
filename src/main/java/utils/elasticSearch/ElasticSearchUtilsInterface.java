@@ -3,6 +3,8 @@ package utils.elasticSearch;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
 
+import javax.annotation.PreDestroy;
+
 /**
  * Interface that represents a class to deal with some ElasticSearch functions like getting the
  * client instance or getting a MainResponse.
@@ -27,4 +29,9 @@ public interface ElasticSearchUtilsInterface {
      * @return MainResponse
      */
     MainResponse getElasticClientResponse(RestHighLevelClient client);
+
+    /**
+     * Method to close the client when the contex is closed to free the resources.
+     */
+    void close();
 }

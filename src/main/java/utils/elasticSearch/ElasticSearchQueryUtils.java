@@ -7,6 +7,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 import java.io.IOException;
 
@@ -49,6 +50,19 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
             e.printStackTrace();
         }
         return response;
+    }
+
+    /**
+     * Method to close the client when the contex is closed to free the resources.
+     */
+    @PreDestroy
+    public void close() {
+        try {
+            client.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
 
