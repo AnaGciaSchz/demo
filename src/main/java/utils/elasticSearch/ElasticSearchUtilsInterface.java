@@ -4,6 +4,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
 
 import javax.annotation.PreDestroy;
+import java.io.IOException;
 
 /**
  * Interface that represents a class to deal with some ElasticSearch functions like getting the
@@ -28,7 +29,7 @@ public interface ElasticSearchUtilsInterface {
      * Method to return a response that contains the necessary cluster or null if there's a problem.
      * @return MainResponse
      */
-    MainResponse getElasticClientResponse();
+    MainResponse getElasticClientResponse() throws IOException;
 
     /**
      * Method to close the client when the contex is closed to free the resources.

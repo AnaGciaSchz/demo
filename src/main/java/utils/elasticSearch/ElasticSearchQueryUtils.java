@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Class that has methods to deal with some ElasticSearch functions
  *
- * @Autrhor Ana Garcia
+ * @Author Ana Garcia
  */
 @Singleton
 @Primary
@@ -42,14 +42,12 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
      * Method to return a response that contains the necessary cluster or null if there's a problem.
      * @return MainResponse
      */
-     public MainResponse getElasticClientResponse(){
+     public MainResponse getElasticClientResponse() throws IOException {
         MainResponse response = null;
-        try {
+
             //Using getClientInstance to make sure I have a client at this point
             response = getClientInstance().info(RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         return response;
     }
 

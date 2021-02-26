@@ -3,13 +3,13 @@ package components;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.hateoas.JsonError;
-import jsonManaging.JsonManaging;
 import jsonManaging.SearchQueryJson;
 import org.elasticsearch.client.core.MainResponse;
 import utils.elasticSearch.ElasticSearchUtilsInterface;
 import utils.elasticSearch.mainResponse.MainResponseUtilsInterface;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 /**
  * Class with the business logic necessary for the
@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * @Autor Ana Garcia
  */
 @Primary
-public class SearchQuery implements JsonManaging {
+public class SearchQuery implements JsonComponent {
 
     @Inject
     ElasticSearchUtilsInterface elasticUtils;
@@ -32,13 +32,16 @@ public class SearchQuery implements JsonManaging {
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
     public HttpResponse getQueryJson(String[] parameters){
+        try {
+            MainResponse response = elasticUtils.getElasticClientResponse();
 
-        MainResponse response = elasticUtils.getElasticClientResponse();
-
-        if (response !=null && parameters.length>=1){
-            return HttpResponse.ok(getOkJson(response, parameters[0]));
+            if (response != null && parameters.length >= 1) {
+                return HttpResponse.ok(getOkJson(response, parameters[0]));
+            }
         }
+        catch(IOException e){
 
+        }
         JsonError error = new JsonError("There was an error with the petition, try again");
 
         return HttpResponse.notFound().body(error);

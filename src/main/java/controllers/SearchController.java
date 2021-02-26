@@ -5,7 +5,7 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
-import jsonManaging.JsonManaging;
+import components.JsonComponent;
 
 import javax.inject.Inject;
 
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class SearchController {
 
     @Inject
-    JsonManaging searchQuery;
+    JsonComponent searchQuery;
 
     /**
      * Method that answers the /search url that has a "query" param.
