@@ -28,7 +28,7 @@ public interface ElasticSearchUtilsInterface {
      * Method to return a response that contains the necessary cluster or null if there's a problem.
      * @return MainResponse
      */
-    MainResponse getElasticClientResponse(RestHighLevelClient client);
+    MainResponse getElasticClientResponse();
 
     /**
      * Method to close the client when the contex is closed to free the resources.

@@ -42,10 +42,11 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
      * Method to return a response that contains the necessary cluster or null if there's a problem.
      * @return MainResponse
      */
-     public MainResponse getElasticClientResponse(RestHighLevelClient client){
+     public MainResponse getElasticClientResponse(){
         MainResponse response = null;
         try {
-            response = client.info(RequestOptions.DEFAULT);
+            //Using getClientInstance to make sure I have a client at this point
+            response = getClientInstance().info(RequestOptions.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
         }
