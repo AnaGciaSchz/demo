@@ -18,15 +18,12 @@ public class TitlesImdbParser {
      * @param title information about the title
      * @return
      */
-    public List<Object> getTitle(String title){
+    public Map<String,Object> getTitle(String title){
 
         String[] information = title.split("\t");
-        List<Object> list = new ArrayList<Object>();
-
-        //id of the title
-        list.add(information[0]);
 
         Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("index", information[0]);
         jsonMap.put("primaryTitle", information[2]);
         jsonMap.put("titleType", information[1]);
         jsonMap.put("genres", information[information.length-1]);
@@ -35,8 +32,7 @@ public class TitlesImdbParser {
             jsonMap.put("end_year", information[6]);
         }
 
-        list.add(jsonMap);
-        return list;
+        return jsonMap;
 
     }
 }

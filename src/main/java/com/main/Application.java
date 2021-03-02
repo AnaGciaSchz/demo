@@ -1,6 +1,7 @@
 package com.main;
 
 import io.micronaut.runtime.Micronaut;
+import utils.LoadElasticSearchInformation;
 
 import java.io.IOException;
 

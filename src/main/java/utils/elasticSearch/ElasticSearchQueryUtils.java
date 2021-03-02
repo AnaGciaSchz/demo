@@ -15,6 +15,7 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that has methods to deal with some ElasticSearch functions
@@ -66,10 +67,9 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
         RestHighLevelClient client = getClientInstance();
 
         for(int i = 0; i<list.size();i++){
-            ArrayList<Object> array = (ArrayList<Object>) list.get(i);
-            bulk.add(new IndexRequest("imdb").id((String) array.get(0)).source(array.get(1), XContentType.JSON));
+            Map<String,Object> map = (Map<String, Object>) list.get(i);
+            bulk.add(new IndexRequest("imdb").id((String) map.get("index")).source(map, XContentType.JSON));
         }
-        System.out.println("bulk");
         client.bulk(bulk, RequestOptions.DEFAULT);
     }
 

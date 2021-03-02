@@ -6,7 +6,7 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Produces;
 
 /**
- * Class that represents the json for tje /search url
+ * Class that represents the json for the /search url
  *
  * @Author Ana Garcia
  */
