@@ -2,14 +2,19 @@ package utils.elasticSearch;
 
 import io.micronaut.context.annotation.Primary;
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
+import org.elasticsearch.common.xcontent.XContentType;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that has methods to deal with some ElasticSearch functions
@@ -49,6 +54,23 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
          response = getClientInstance().info(RequestOptions.DEFAULT);
 
         return response;
+    }
+
+    /**
+     * Method to add a lot of information at the same time to elasticsearch
+     * @param list list of informattion to add
+     * @throws IOException
+     */
+    public void bulkAdd(List<Object> list) throws IOException {
+        BulkRequest bulk = new BulkRequest();
+        RestHighLevelClient client = getClientInstance();
+
+        for(int i = 0; i<list.size();i++){
+            ArrayList<Object> array = (ArrayList<Object>) list.get(i);
+            bulk.add(new IndexRequest("imdb").id((String) array.get(0)).source(array.get(1), XContentType.JSON));
+        }
+        System.out.println("bulk");
+        client.bulk(bulk, RequestOptions.DEFAULT);
     }
 
     /**

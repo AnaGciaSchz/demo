@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Produces;
 
+/**
+ * Class that represents the json for tje /search url
+ *
+ * @Author Ana Garcia
+ */
 @Produces(MediaType.APPLICATION_JSON)
 public class SearchQueryJson {
 

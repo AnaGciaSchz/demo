@@ -4,6 +4,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Interface that represents a class to deal with some ElasticSearch functions like getting the
@@ -29,6 +30,13 @@ public interface ElasticSearchUtilsInterface {
      * @return MainResponse
      */
     MainResponse getElasticClientResponse() throws IOException;
+
+    /**
+     * Method to add a lot of information at the same time to elasticsearch
+     * @param list list of informattion to add
+     * @throws IOException
+     */
+    void bulkAdd(List<Object> list) throws IOException;
 
     /**
      * Method to close the client when the context is closed to free the resources.
