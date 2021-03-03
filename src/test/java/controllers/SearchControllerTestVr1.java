@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Test class for the test about the /search url
+ * Test class for the test about the last version of the /search url
  *
  * @Author Ana Garcia
  */
 @MicronautTest
-public class SearchControllerTest {
+public class SearchControllerTestVr1 {
 
     /**
      * "Client" that will navigate through the page and do the tests
