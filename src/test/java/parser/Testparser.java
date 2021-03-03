@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import utils.parser.TitlesImdbParser;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Testparser {

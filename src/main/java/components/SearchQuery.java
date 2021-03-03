@@ -1,6 +1,5 @@
 package components;
 
-import io.micronaut.context.annotation.Primary;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.hateoas.JsonError;
 import jsonManaging.SearchQueryJson;
@@ -17,7 +16,6 @@ import java.io.IOException;
  *
  * @Author Ana Garcia
  */
-@Primary
 public class SearchQuery implements JsonComponent {
 
     @Inject

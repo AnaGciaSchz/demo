@@ -25,13 +25,12 @@ public class SearchElastic {
         searchRequest.indices("imdb");
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("primaryTitle", "Carmencita"));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("primaryTitle", query));
         searchRequest.source(searchSourceBuilder);
 
         RestHighLevelClient client = elasticSearchUtils.getClientInstance();
 
         SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
-        System.out.println(response.getHits().getTotalHits());
 
         return getHits(response);
     }

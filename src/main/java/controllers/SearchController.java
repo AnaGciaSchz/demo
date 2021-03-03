@@ -1,5 +1,6 @@
 package controllers;
 
+import components.SearchTitle;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -25,7 +26,7 @@ public class SearchController {
     JsonComponent searchQuery;
 
     @Inject
-    SearchElastic searchElastic;
+    SearchTitle searchTitle;
 
     /**
      * Method that answers the /search url that has a "query" param.
@@ -35,20 +36,9 @@ public class SearchController {
      */
     @Get(produces = MediaType.APPLICATION_JSON)
     public HttpResponse index(@QueryValue String query) {
-/**
         String[] s = new String[1];
         s[0] = query;
-        return searchQuery.getQueryJson(s);
- */
-        try {
-            return (HttpResponse) searchElastic.searchImdb(query).get(0);
-        }
-        catch(IOException e){
-
-            JsonError error = new JsonError("There was an error with the petition, try again");
-
-            return HttpResponse.notFound().body(error);
-        }
+        return searchTitle.getQueryJson(s);
     }
 
 }
