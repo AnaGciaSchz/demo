@@ -18,7 +18,7 @@ public class LoadElasticSearchInformation {
 
     /**
      * Method that has the logic that loads the information from the csv
-     * @throws IOException
+     * @throws IOException if there's an error
      */
     public void loadInformation() throws IOException {
 
@@ -27,12 +27,12 @@ public class LoadElasticSearchInformation {
         ElasticSearchUtilsInterface elasticSearchUtils = new ElasticSearchQueryUtils();
 
         List<String> originalLines = fileutil.readCsv("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         for(int i = 1; i<originalLines.size();i++) {
             list.add(parser.getTitle(originalLines.get(i)));
             if(i%1000 == 0){
                 elasticSearchUtils.bulkAdd(list);
-                list = new ArrayList<Object>();
+                list = new ArrayList<>();
             }
         }
         elasticSearchUtils.bulkAdd(list);

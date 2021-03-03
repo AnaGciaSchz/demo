@@ -11,12 +11,12 @@ import javax.inject.Inject;
 import java.io.IOException;
 
 /**
- * Class with the business logic necessary for the
+ * Class with the business logic necessary for the firs version of the
  * SearchQueryController that answers to the petition or the /search url
  *
  * @Author Ana Garcia
  */
-public class SearchQuery implements JsonComponent {
+public class SearchQuery implements BusinessLogicJsonComponent {
 
     @Inject
     ElasticSearchUtilsInterface elasticUtils;

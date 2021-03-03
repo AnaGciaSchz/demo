@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Produces;
 
-import java.util.ArrayList;
-
 /**
- * Class that represents the json for the /search url
+ * Class that represents the json of the titles for the /search url
  *
  * @Author Ana Garcia
  */

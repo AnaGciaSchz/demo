@@ -13,7 +13,6 @@ import org.elasticsearch.common.xcontent.XContentType;
 import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +58,8 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
 
     /**
      * Method to add a lot of information at the same time to elasticsearch
-     * @param list list of informattion to add
-     * @throws IOException
+     * @param list list of information to add
+     * @throws IOException if there's an error
      */
     public void bulkAdd(List<Object> list) throws IOException {
         BulkRequest bulk = new BulkRequest();

@@ -33,8 +33,8 @@ public interface ElasticSearchUtilsInterface {
 
     /**
      * Method to add a lot of information at the same time to elasticsearch
-     * @param list list of informattion to add
-     * @throws IOException
+     * @param list list of information to add
+     * @throws IOException if there's an error
      */
     void bulkAdd(List<Object> list) throws IOException;
 

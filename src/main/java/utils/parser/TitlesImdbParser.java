@@ -1,8 +1,6 @@
 package utils.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,10 +11,10 @@ import java.util.Map;
 public class TitlesImdbParser {
 
     /**
-     * Methot that  parse a title into a list with the id of the title in the 0 position and
+     * Method that  parse a title into a list with the id of the title in the 0 position and
      *  * the maps for the json in the 1 position.
      * @param title information about the title
-     * @return
+     * @return a map with the information
      */
     public Map<String,Object> getTitle(String title){
 

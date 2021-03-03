@@ -15,11 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that has all the logic related with the search in elasticsearch
+ */
 public class SearchElastic {
 
     @Inject
     ElasticSearchUtilsInterface elasticSearchUtils;
 
+    /**
+     * Method to search a query in the imdb cluster
+     * @param query Query that we want to search in that cluster
+     * @return A list of the results (size <=10)
+     * @throws IOException I there is an error
+     */
     public List<Map> searchImdb (String query) throws IOException {
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.indices("imdb");
@@ -35,8 +44,13 @@ public class SearchElastic {
         return getHits(response);
     }
 
+    /**
+     * Method that creates the list of results
+     * @param response Response of the search
+     * @return The list of results (size<=10)
+     */
     private List<Map> getHits(SearchResponse response){
-        List<Map> hits = new ArrayList<Map>();
+        List<Map> hits = new ArrayList<>();
         for(SearchHit hit : response.getHits()){
             hits.add(hit.getSourceAsMap());
         }

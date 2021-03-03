@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class with the business logic necessary for the
+ * Class with the business logic necessary for the current version of
  * SearchQueryController that answers to the petition or the /search url
  *
  * @Author Ana Garcia
  */
 @Primary
-public class SearchTitle implements JsonComponent {
+public class SearchTitle implements BusinessLogicJsonComponent {
 
     @Inject
     SearchElastic searchElastic;
@@ -30,6 +30,7 @@ public class SearchTitle implements JsonComponent {
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
     public HttpResponse getQueryJson(String[] parameters){
+        JsonError error = new JsonError("There was an error, try again with another parameter");
         try {
 
             if (parameters.length >= 1) {
@@ -38,16 +39,16 @@ public class SearchTitle implements JsonComponent {
             }
         }
         catch(IOException e){
+            error = new JsonError("There was an error with the petition, try again");
 
         }
-        JsonError error = new JsonError("There was an error with the petition, try again");
 
         return HttpResponse.notFound().body(error);
     }
 
     /**
      * Method to create the ok response for this url
-     * @param hits contains the search result
+     * @param hits contains the search result (list)
      * @return a JSON with the total of results and the results
      */
     private SearchTitlesJson getOkJson(List<Map> hits){
