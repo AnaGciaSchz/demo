@@ -1,5 +1,7 @@
 package controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
@@ -9,8 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for the test about the current version of the /search url
@@ -198,5 +203,26 @@ public class SearchControllerTestVr2 {
                 body);
     }
 
+    /**
+     * Test to see if the first result is what we are searching for (Title and type)
+     */
+    @Test
+    public void testBestResultTitleAndType(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=The%20Avengers%20tvSeries");
+        String body = client.toBlocking().retrieve(request);
 
+        assertNotNull(body);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Map<String, Object> map = mapper.readValue(body, Map.class);
+            ArrayList<LinkedHashMap> items = (ArrayList) map.get("items");
+            assertEquals(10,map.get("total"));
+            assertEquals("The Avengers",items.get(0).get("title"));
+            assertEquals("tvSeries",items.get(0).get("type"));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
