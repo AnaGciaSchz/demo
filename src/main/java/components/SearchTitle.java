@@ -34,7 +34,8 @@ public class SearchTitle implements BusinessLogicJsonComponent {
         try {
 
             if (parameters.length >= 1) {
-                List<Map> hits = searchElastic.searchImdb(parameters[0]);
+                String[] fields = {"index","primaryTitle", "genres", "titleType", "start_year","end_year"};
+                List<Map> hits = searchElastic.search("imdb",fields,parameters[0]);
                  return HttpResponse.ok().body(getOkJson(hits));
             }
         }
