@@ -4,6 +4,9 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -33,8 +36,11 @@ public class SearchElastic {
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.indices("imdb");
 
+        String[] querys = query.split(" ");
+        BoolQueryBuilder queryBuilder = searchInEveryfield(querys);
+
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("primaryTitle", query));
+        searchSourceBuilder.query(queryBuilder);
         searchRequest.source(searchSourceBuilder);
 
         RestHighLevelClient client = elasticSearchUtils.getClientInstance();
@@ -42,6 +48,25 @@ public class SearchElastic {
         SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
 
         return getHits(response);
+    }
+
+    private BoolQueryBuilder searchInEveryfield(String[] querys){
+
+        BoolQueryBuilder query = new BoolQueryBuilder();
+        MatchQueryBuilder A,B,C,D,E,F;
+        for(String q : querys){
+            A = QueryBuilders.matchQuery("primaryTitle", q);
+            B = QueryBuilders.matchQuery("titleType", q);
+            C = QueryBuilders.matchQuery("index", q);
+            D = QueryBuilders.matchQuery("genres", q);
+            E = QueryBuilders.matchQuery("start_year", q);
+            F =QueryBuilders.matchQuery("end_year", q);
+            query.should(A).should(B).should(C).should(D).should(E).should(F);
+        }
+
+        //use filter
+        BoolQueryBuilder filterBuiler = QueryBuilders.boolQuery().must(query);
+        return filterBuiler;
     }
 
     /**
