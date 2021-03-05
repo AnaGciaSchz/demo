@@ -225,4 +225,73 @@ public class SearchControllerTestVr2 {
         }
 
     }
+
+    /**
+     * Test to see if the first result is what we are searching for (Title and start year)
+     */
+    @Test
+    public void testBestResultTitleAndStartYear(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=The%20Avengers%202012");
+        String body = client.toBlocking().retrieve(request);
+
+        assertNotNull(body);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Map<String, Object> map = mapper.readValue(body, Map.class);
+            ArrayList<LinkedHashMap> items = (ArrayList) map.get("items");
+            assertEquals(10,map.get("total"));
+            assertEquals("The Avengers",items.get(0).get("title"));
+            assertEquals("2012",items.get(0).get("start_year"));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Test to see if the first result is what we are searching for (Title and start year)
+     */
+    @Test
+    public void testBestResultTitleAndGenre(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=The%20Avengers%20Comedy");
+        String body = client.toBlocking().retrieve(request);
+
+        assertNotNull(body);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Map<String, Object> map = mapper.readValue(body, Map.class);
+            ArrayList<LinkedHashMap> items = (ArrayList) map.get("items");
+            ArrayList genres = (ArrayList) items.get(0).get("genres");
+            assertEquals(10,map.get("total"));
+            assertEquals("The Avengers",items.get(0).get("title"));
+            assertEquals("Comedy",genres.get(0));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Test to see if the search by id returns only one result and its correct
+     */
+    @Test
+    public void testId(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=tt2577784");
+        String body = client.toBlocking().retrieve(request);
+
+        assertNotNull(body);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Map<String, Object> map = mapper.readValue(body, Map.class);
+            ArrayList<LinkedHashMap> items = (ArrayList) map.get("items");
+            assertEquals(1,map.get("total"));
+            assertEquals("tt2577784",items.get(0).get("id"));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
