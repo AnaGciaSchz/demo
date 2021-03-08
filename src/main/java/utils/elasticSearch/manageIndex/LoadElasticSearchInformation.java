@@ -1,4 +1,4 @@
-package utils;
+package utils.elasticSearch.manageIndex;
 
 import utils.elasticSearch.ElasticSearchQueryUtils;
 import utils.elasticSearch.ElasticSearchUtilsInterface;
@@ -10,23 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that loads titles information to ElasticSearch
+ * Class that loads information to ElasticSearch
  *
  * @Author Ana Garcia
  */
 public class LoadElasticSearchInformation {
 
+
+    //"/Users/anamariagarciasanchez/Documents/title.basics.tsv"
+
     /**
-     * Method that has the logic that loads the information from the csv
+     * Method that has the logic that loads the information from a csv into the imdb database with its format
      * @throws IOException if there's an error
      */
-    public void loadInformation() throws IOException {
+    public void loadImdbInformation(String path) throws IOException {
 
         FileUtil fileutil = new FileUtil();
         TitlesImdbParser parser = new TitlesImdbParser();
         ElasticSearchUtilsInterface elasticSearchUtils = new ElasticSearchQueryUtils();
 
-        List<String> originalLines = fileutil.readCsv("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
+        List<String> originalLines = fileutil.readCsv(path);
         List<Object> list = new ArrayList<>();
         for(int i = 1; i<originalLines.size();i++) {
             list.add(parser.getTitle(originalLines.get(i)));
