@@ -45,7 +45,7 @@ public class SearchControllerTestVr2 {
         try {
             Map<String, Object> map = mapper.readValue(body, Map.class);
             ArrayList<LinkedHashMap> items = (ArrayList) map.get("items");
-            assertEquals(6,map.get("total"));
+            assertEquals(7,map.get("total"));
             assertEquals("Carmencita",items.get(0).get("title"));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -170,7 +170,7 @@ public class SearchControllerTestVr2 {
             Map<String, Object> map = mapper.readValue(body, Map.class);
             ArrayList<LinkedHashMap> items = (ArrayList) map.get("items");
             assertEquals(10,map.get("total"));
-            assertEquals("Spiderman",items.get(0).get("title"));
+            assertEquals("Spider-Man",items.get(0).get("title"));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -269,7 +269,7 @@ public class SearchControllerTestVr2 {
     }
 
     /**
-     * Test to see if the the upper and lower cases doesn't affect the search
+     * Test to see if the upper and lower cases doesn't affect the search
      */
     @Test
     public void testUpperCase(){
@@ -290,5 +290,105 @@ public class SearchControllerTestVr2 {
 
 
 
+    }
+
+    /**
+     * Test to see if the - symbol doesn't affect the search
+     */
+    @Test
+    public void testHyphenSymbol(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=Spiderman");
+        String body1 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=Spider-Man");
+        String body2 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=S-p-i-d-e-r-m-a-n");
+        String body3 = client.toBlocking().retrieve(request);
+
+        assertNotNull(body1);
+        assertNotNull(body2);
+        assertNotNull(body3);
+
+        assertEquals(body1,body2);
+        assertEquals(body1,body3);
+        assertEquals(body2,body3);
+    }
+
+    /**
+     * Test to see if the , symbol doesn't affect the search
+     */
+    @Test
+    public void testCommaSymbol(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=Spiderman");
+        String body1 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=Spider,Man");
+        String body2 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=S,p,i,d,e,r,m,a,n");
+        String body3 = client.toBlocking().retrieve(request);
+
+        assertNotNull(body1);
+        assertNotNull(body2);
+        assertNotNull(body3);
+
+        assertEquals(body1,body2);
+        assertEquals(body1,body3);
+        assertEquals(body2,body3);
+    }
+
+    /**
+     * Test to see if the . symbol doesn't affect the search
+     */
+    @Test
+    public void testDotSymbol(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=Spiderman");
+        String body1 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=Spider.Man");
+        String body2 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=S.p.i.d.e.r.m.a.n");
+        String body3 = client.toBlocking().retrieve(request);
+
+        assertNotNull(body1);
+        assertNotNull(body2);
+        assertNotNull(body3);
+
+        assertEquals(body1,body2);
+        assertEquals(body1,body3);
+        assertEquals(body2,body3);
+    }
+
+    /**
+     * Test to see if the _ symbol doesn't affect the search
+     */
+    @Test
+    public void testUnderscoreSymbol(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=Spiderman");
+        String body1 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=Spider_Man");
+        String body2 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=S_p_i_d_e_r_m_a_n");
+        String body3 = client.toBlocking().retrieve(request);
+
+        assertNotNull(body1);
+        assertNotNull(body2);
+        assertNotNull(body3);
+
+        assertEquals(body1,body2);
+        assertEquals(body1,body3);
+        assertEquals(body2,body3);
+    }
+
+     /**
+     * Test to see if the accents doesn't affect the search
+     */
+    @Test
+    public void testAccent(){
+        HttpRequest<String> request = HttpRequest.GET("/search?query=Spiderman");
+        String body1 = client.toBlocking().retrieve(request);
+        request = HttpRequest.GET("/search?query=Spídérmán");
+        String body2 = client.toBlocking().retrieve(request);
+
+        assertNotNull(body1);
+        assertNotNull(body2);
+
+        assertEquals(body1,body2);
     }
 }

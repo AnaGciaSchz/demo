@@ -22,15 +22,18 @@ public class Application {
 
         Micronaut.run(Application.class, args);
 
-        /**
+/**
         DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
         d.deleteInformation("imdb");
+
+
 
         CreateElasticSearchIndex c = new CreateElasticSearchIndex();
         c.createImdbIndex("/Users/anamariagarciasanchez/Documents/IMDBCreateIndex.json");
 
         LoadElasticSearchInformation l = new LoadElasticSearchInformation();
         l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
-         */
+ */
+
     }
 }
