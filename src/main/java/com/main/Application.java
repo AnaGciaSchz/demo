@@ -29,7 +29,7 @@ public class Application {
 
 
         CreateElasticSearchIndex c = new CreateElasticSearchIndex();
-        c.createImdbIndex("/Users/anamariagarciasanchez/Documents/IMDBCreateIndex.json");
+        c.createImdbIndex("./IMDBCreateIndex.json");
 
         LoadElasticSearchInformation l = new LoadElasticSearchInformation();
         l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");

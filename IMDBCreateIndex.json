@@ -1,0 +1,75 @@
+{
+  "mappings": {
+    "properties": {
+      "index": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      },
+	"primaryTitle": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      },
+	"titleType": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      },
+	"genres": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      },
+	"start_year": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      },
+	"end_year": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "title_search_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "char_filter": [],
+          "filter": ["word-delimiter-custom","flatten_graph","asciifolding","spanish_stemmer","lowercase"]
+        },
+        "title_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "char_filter": [],
+          "filter": ["word-delimiter-custom","flatten_graph","asciifolding","spanish_stemmer","lowercase"]
+        }
+      },
+     "filter":{
+	"spanish_stemmer":{
+	   "type": "stemmer",
+	   "language": "spanish"
+	},
+	"word-delimiter-custom":{
+	   "type":"word_delimiter_graph",
+	   "preserve_original":"true",
+	   "catenate_all": "true"
+	}
+      },
+     "char_filter":{
+	"my_char_filter":{
+	  "type":"mapping",
+	  "mappings":[
+	   ", => ",
+	   ". => ",
+	   "_ => "
+	]
+      }
+    } 
+}	
+  }
+}
