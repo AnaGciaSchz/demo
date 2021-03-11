@@ -21,19 +21,21 @@ public class Application {
     public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
-
 /**
         DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
         d.deleteInformation("imdb");
 
-
+        System.out.println("deleted");
 
         CreateElasticSearchIndex c = new CreateElasticSearchIndex();
         c.createImdbIndex("./IMDBCreateIndex.json");
 
+        System.out.println("created");
+
         LoadElasticSearchInformation l = new LoadElasticSearchInformation();
         l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
- */
 
+        System.out.println("inserted");
+*/
     }
 }
