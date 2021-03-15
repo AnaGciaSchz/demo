@@ -3,12 +3,12 @@ package components;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.hateoas.JsonError;
-import jsonManaging.SearchTitlesJson;
-import jsonManaging.TitleJson;
+import jsonManaging.results.*;
 import utils.elasticSearch.search.SearchElastic;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,12 +54,21 @@ public class SearchTitle implements BusinessLogicJsonComponent {
      */
     private SearchTitlesJson getOkJson(List<Map> hits){
         TitleJson[] titles = new TitleJson[hits.size()];
+
+        Map<String, Integer> genres = new HashMap<String, Integer>();
+        genres.put("drama",4);
+
+        Map<String, Integer> types = new HashMap<String, Integer>();
+        types.put("movie",5);
+
+        AggregationsJson a = new AggregationsJson(genres,types);
+
         for(int i = 0; i<hits.size();i++){
             Map title = hits.get(i);
             titles[i]=new TitleJson(title.get("index"),title.get("primaryTitle"),
                     title.get("genres"),title.get("titleType"),title.get("start_year"),title.get("end_year"));
         }
 
-        return new SearchTitlesJson(titles.length, titles);
+        return new SearchTitlesJson(titles.length, titles, a);
     }
 }

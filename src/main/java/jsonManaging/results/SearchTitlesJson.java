@@ -1,4 +1,4 @@
-package jsonManaging;
+package jsonManaging.results;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,11 +15,14 @@ public class SearchTitlesJson {
 
     private final int total;
     private final TitleJson[] items;
+    private final AggregationsJson aggregations;
 
     @JsonCreator
-    public SearchTitlesJson (@JsonProperty("total") int total, @JsonProperty ("items") TitleJson[] items){
+    public SearchTitlesJson (@JsonProperty("total") int total, @JsonProperty ("items") TitleJson[] items,
+                             @JsonProperty ("aggregations") AggregationsJson aggregations){
         this.total = total;
         this.items = items;
+        this.aggregations = aggregations;
     }
 
     public int getTotal() {
@@ -29,6 +32,8 @@ public class SearchTitlesJson {
     public TitleJson[] getItems() {
         return items;
     }
+
+    public AggregationsJson getAggregations(){return aggregations;}
 
 
 }

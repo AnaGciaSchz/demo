@@ -36,6 +36,7 @@ public class Application {
         l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
 
         System.out.println("inserted");
-*/
+ */
+
     }
 }
