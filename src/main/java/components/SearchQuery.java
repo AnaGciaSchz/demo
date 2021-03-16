@@ -9,6 +9,7 @@ import utils.elasticSearch.mainResponse.MainResponseUtilsInterface;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Class with the business logic necessary for the firs version of the
@@ -29,12 +30,12 @@ public class SearchQuery implements BusinessLogicJsonComponent {
      * @param parameters List of parameters that need to be in the HttpResponse if there is no problem
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
-    public HttpResponse getQueryJson(String[] parameters){
+    public HttpResponse getQueryJson(Map<String,String> parameters){
         try {
             MainResponse response = elasticUtils.getElasticClientResponse();
 
-            if (response != null && parameters.length >= 1) {
-                return HttpResponse.ok(getOkJson(response, parameters[0]));
+            if (response != null && parameters.keySet().size() >= 1) {
+                return HttpResponse.ok(getOkJson(response, parameters.get("query")));
             }
         }
         catch(IOException e){

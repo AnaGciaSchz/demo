@@ -2,6 +2,8 @@ package components;
 
 import io.micronaut.http.HttpResponse;
 
+import java.util.Map;
+
 /**
  * Interface for the classes that have business logic and returns a HttpResponse
  *
@@ -14,5 +16,5 @@ public interface BusinessLogicJsonComponent {
      * @param parameters List of parameters that need to be in the HttpResponse if there is no problem
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
-    HttpResponse getQueryJson(String[] parameters);
+    HttpResponse getQueryJson(Map<String,String> parameters);
 }

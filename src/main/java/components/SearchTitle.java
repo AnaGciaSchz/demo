@@ -29,14 +29,13 @@ public class SearchTitle implements BusinessLogicJsonComponent {
      * @param parameters List of parameters that need to be in the HttpResponse if there is no problem
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
-    public HttpResponse getQueryJson(String[] parameters){
+    public HttpResponse getQueryJson(Map<String,String> parameters){
         JsonError error = new JsonError("There was an error, try again with another parameter");
         try {
 
-            if (parameters.length >= 1) {
-                String[] fields = {"index","primaryTitle", "genres", "titleType", "start_year","end_year"};
-                List<Map> hits = searchElastic.search("imdb",fields,parameters[0]);
-                 return HttpResponse.ok().body(getOkJson(hits));
+            if (parameters.get("query") != null) {
+                Map<String,List<Map>> results = searchElastic.searchImdb(parameters);
+                 return HttpResponse.ok().body(getOkJson(results));
             }
         }
         catch(IOException e){
@@ -49,25 +48,37 @@ public class SearchTitle implements BusinessLogicJsonComponent {
 
     /**
      * Method to create the ok response for this url
-     * @param hits contains the search result (list)
+     * @param results contains the search result (list) and the aggregations (list)
      * @return a JSON with the total of results and the results
      */
-    private SearchTitlesJson getOkJson(List<Map> hits){
+    private SearchTitlesJson getOkJson(Map<String,List<Map>> results){
+
+        List<Map> hits = results.get("hits");
+
         TitleJson[] titles = new TitleJson[hits.size()];
-
-        Map<String, Integer> genres = new HashMap<String, Integer>();
-        genres.put("drama",4);
-
-        Map<String, Integer> types = new HashMap<String, Integer>();
-        types.put("movie",5);
-
-        AggregationsJson a = new AggregationsJson(genres,types);
 
         for(int i = 0; i<hits.size();i++){
             Map title = hits.get(i);
             titles[i]=new TitleJson(title.get("index"),title.get("primaryTitle"),
                     title.get("genres"),title.get("titleType"),title.get("start_year"),title.get("end_year"));
         }
+
+        AggregationsJson a = new AggregationsJson(null,null);
+
+        if(results.get("aggregations") != null){
+            /**Map<String, Integer> genres = new HashMap<String, Integer>();
+             genres.put(parameters[1],4);
+
+             Map<String, Integer> types = new HashMap<String, Integer>();
+             types.put(parameters[2],5);
+
+             AggregationsJson a = new AggregationsJson(genres,types);*/
+
+            Map<String,Object> m = (Map<String, Object>) results.get("aggregations");
+            System.out.println("hgsjhag");
+        }
+
+
 
         return new SearchTitlesJson(titles.length, titles, a);
     }
