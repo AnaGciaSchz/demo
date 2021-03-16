@@ -12,14 +12,12 @@
         "analyzer": "title_analyzer"
       },
 	"titleType": {
-        "type": "text",
-        "search_analyzer": "title_search_analyzer",
-        "analyzer": "title_analyzer"
+      "type": "keyword",
+      "normalizer": "my_normalizer"
       },
 	"genres": {
-        "type": "text",
-        "search_analyzer": "title_search_analyzer",
-        "analyzer": "title_analyzer"
+        "type": "keyword",
+        "normalizer": "my_normalizer"
       },
 	"start_year": {
         "type": "text",
@@ -35,6 +33,13 @@
   },
   "settings": {
     "analysis": {
+      "normalizer": {
+        "my_normalizer": {
+          "type": "custom",
+          "char_filter": [],
+          "filter": ["lowercase", "asciifolding"]
+        }
+      },
       "analyzer": {
         "title_search_analyzer": {
           "type": "custom",

@@ -8,7 +8,6 @@ import utils.elasticSearch.search.SearchElastic;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,9 +72,10 @@ public class SearchTitle implements BusinessLogicJsonComponent {
              types.put(parameters[2],5);
 
              AggregationsJson a = new AggregationsJson(genres,types);*/
-
+        /**
             Map<String,Object> m = (Map<String, Object>) results.get("aggregations");
             System.out.println("hgsjhag");
+         */
         }
 
 

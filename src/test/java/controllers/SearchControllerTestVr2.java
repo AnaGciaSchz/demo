@@ -79,7 +79,7 @@ public class SearchControllerTestVr2 {
         body = getBody("sdsadsadads");
 
         assertNotNull(body);
-        assertEquals("{\"total\":0}", body);
+        assertEquals("{\"total\":0,\"aggregations\":{}}", body);
     }
 
     /**
@@ -104,7 +104,7 @@ public class SearchControllerTestVr2 {
         body = client.toBlocking().retrieve(request);
 
         assertNotNull(body);
-        assertEquals("{\"total\":0}", body);
+        assertEquals("{\"total\":0,\"aggregations\":{}}", body);
     }
 
     /**
@@ -116,7 +116,7 @@ public class SearchControllerTestVr2 {
         body = client.toBlocking().retrieve(request);
 
         assertNotNull(body);
-        assertEquals("{\"total\":0}", body);
+        assertEquals("{\"total\":0,\"aggregations\":{}}", body);
     }
 
     /**

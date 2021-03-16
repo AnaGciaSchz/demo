@@ -83,7 +83,7 @@ public class SearchElastic {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder query = new BoolQueryBuilder();
-        query.must(QueryBuilders.multiMatchQuery(parameters.get("query"),fields).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS));
+        query.should(QueryBuilders.multiMatchQuery(parameters.get("query"),fields).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS));
 
         BoolQueryBuilder genre = null;
         BoolQueryBuilder type = null;
@@ -97,7 +97,7 @@ public class SearchElastic {
                 genre.should(QueryBuilders.termQuery("genres", genres[i]));
                 agg.subAggregation(AggregationBuilders.terms(genres[i]).field("genre"));
             }
-            query.must(genre);
+            query.should(genre);
         }
         if(parameters.get("type") != null) {
             String[] types = parameters.get("type").split(",");
@@ -106,7 +106,7 @@ public class SearchElastic {
                 type.should(QueryBuilders.termQuery("titleType", types[i]));
                 agg.subAggregation(AggregationBuilders.terms(types[i]).field("titleType"));
             }
-            query.must(type);
+            query.should(type);
         }
 
         sourceBuilder.query(query);
@@ -121,10 +121,10 @@ public class SearchElastic {
      * @return a builder with the query
      */
     private SearchSourceBuilder searchInEveryfield(String[] fields, String query){
-
         SearchSourceBuilder builder = new SearchSourceBuilder();
         builder.query(QueryBuilders.multiMatchQuery(query, fields).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS));
         return builder;
+
     }
 
     /**
