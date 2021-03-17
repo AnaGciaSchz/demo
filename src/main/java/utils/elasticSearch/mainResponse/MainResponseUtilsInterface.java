@@ -11,6 +11,7 @@ public interface MainResponseUtilsInterface {
 
     /**
      * Method to return the name of the cluster of a MainResponse and the elasticSearchVersion
+     *
      * @param response MainResponse
      * @return String with the name and the version separated by an space
      */

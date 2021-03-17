@@ -16,11 +16,9 @@ import java.util.List;
  */
 public class LoadElasticSearchInformation {
 
-
-    //"/Users/anamariagarciasanchez/Documents/title.basics.tsv"
-
     /**
      * Method that has the logic that loads the information from a csv into the imdb database with its format
+     *
      * @throws IOException if there's an error
      */
     public void loadImdbInformation(String path) throws IOException {
@@ -31,9 +29,9 @@ public class LoadElasticSearchInformation {
 
         List<String> originalLines = fileutil.readCsv(path);
         List<Object> list = new ArrayList<>();
-        for(int i = 1; i<originalLines.size();i++) {
+        for (int i = 1; i < originalLines.size(); i++) {
             list.add(parser.getTitle(originalLines.get(i)));
-            if(i%1000 == 0){
+            if (i % 1000 == 0) {
                 elasticSearchUtils.bulkAdd(list);
                 list = new ArrayList<>();
             }

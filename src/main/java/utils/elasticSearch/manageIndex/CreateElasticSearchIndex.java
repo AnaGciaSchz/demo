@@ -21,6 +21,7 @@ public class CreateElasticSearchIndex {
 
     /**
      * Method that creates an index using a json file with its properties and settings
+     *
      * @param fileName path of the json
      * @throws IOException
      */

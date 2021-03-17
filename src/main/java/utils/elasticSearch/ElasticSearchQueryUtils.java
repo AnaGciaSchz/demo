@@ -30,10 +30,11 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
     /**
      * Method to return the rest high level client that is necessary to expose elasticSearch methods.
      * It also contains the specific cluster that we are using.
+     *
      * @return RestHighLevelClient
      */
-    public RestHighLevelClient getClientInstance(){
-        if(client==null){
+    public RestHighLevelClient getClientInstance() {
+        if (client == null) {
             client = new RestHighLevelClient(
                     RestClient.builder(
                             new HttpHost(HOSTNAME, ELASTICPORT1, SCHEME),
@@ -45,19 +46,21 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
 
     /**
      * Method to return a response that contains the necessary cluster or null if there's a problem.
+     *
      * @return MainResponse
      */
-     public MainResponse getElasticClientResponse() throws IOException {
+    public MainResponse getElasticClientResponse() throws IOException {
         MainResponse response;
 
-            //Using getClientInstance to make sure I have a client at this point
-         response = getClientInstance().info(RequestOptions.DEFAULT);
+        //Using getClientInstance to make sure I have a client at this point
+        response = getClientInstance().info(RequestOptions.DEFAULT);
 
         return response;
     }
 
     /**
      * Method to add a lot of information at the same time to elasticsearch
+     *
      * @param list list of information to add
      * @throws IOException if there's an error
      */
@@ -65,8 +68,8 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
         BulkRequest bulk = new BulkRequest();
         RestHighLevelClient client = getClientInstance();
 
-        for(int i = 0; i<list.size();i++){
-            Map<String,Object> map = (Map<String, Object>) list.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> map = (Map<String, Object>) list.get(i);
             bulk.add(new IndexRequest("imdb").id((String) map.get("index")).source(map, XContentType.JSON));
         }
         client.bulk(bulk, RequestOptions.DEFAULT);
@@ -79,8 +82,7 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
     public void close() {
         try {
             client.close();
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Problem closing the connection"); //This should be written in a log
         }
     }

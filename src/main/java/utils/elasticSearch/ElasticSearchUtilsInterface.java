@@ -14,25 +14,28 @@ import java.util.List;
  */
 public interface ElasticSearchUtilsInterface {
 
-    String HOSTNAME= "localhost";
+    String HOSTNAME = "localhost";
     int ELASTICPORT1 = 9200;
     int ELASTICPORT2 = 9201;
     String SCHEME = "http";
 
     /**
      * Method to return the rest high level client that is necessary to expose elasticSearch methods.
+     *
      * @return RestHighLevelClient
      */
     RestHighLevelClient getClientInstance();
 
     /**
      * Method to return a response that contains the necessary cluster or null if there's a problem.
+     *
      * @return MainResponse
      */
     MainResponse getElasticClientResponse() throws IOException;
 
     /**
      * Method to add a lot of information at the same time to elasticsearch
+     *
      * @param list list of information to add
      * @throws IOException if there's an error
      */

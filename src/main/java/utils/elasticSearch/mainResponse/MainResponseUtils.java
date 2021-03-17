@@ -9,14 +9,15 @@ import org.elasticsearch.client.core.MainResponse;
  * @Author Ana Garcia
  */
 @Primary
-public class MainResponseUtils implements MainResponseUtilsInterface{
+public class MainResponseUtils implements MainResponseUtilsInterface {
     /**
      * Method to return the name of the cluster of a MainResponse and the elasticSearchVersion
+     *
      * @param response MainResponse
      * @return String with the name and the version separated by an space
      */
     @Override
-    public String getClusterNameAndVersion(MainResponse response){
-        return response.getClusterName()+" "+response.getVersion().getNumber();
+    public String getClusterNameAndVersion(MainResponse response) {
+        return response.getClusterName() + " " + response.getVersion().getNumber();
     }
 }

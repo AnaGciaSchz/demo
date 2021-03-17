@@ -21,6 +21,7 @@ public class DeleteElasticSearchInformation {
 
     /**
      * Method that has the logic that deletes the information from the an elasticsearch index
+     *
      * @throws IOException if there's an error
      */
     public void deleteInformation(String index) throws IOException {

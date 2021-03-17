@@ -13,8 +13,9 @@ public interface BusinessLogicJsonComponent {
 
     /**
      * Method that answers the petition with a HttpResponse
+     *
      * @param parameters List of parameters that need to be in the HttpResponse if there is no problem
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
-    HttpResponse getQueryJson(Map<String,String> parameters);
+    HttpResponse getQueryJson(Map<String, String> parameters);
 }

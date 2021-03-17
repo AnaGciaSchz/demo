@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SearchControllerTestVr2 {
+public class SearchControllerTest {
 
     /**
      * "Client" that will navigate through the page and do the tests
@@ -39,14 +39,14 @@ public class SearchControllerTestVr2 {
     RxHttpClient client;
 
     HttpRequest<String> request;
-    String body,body1,body2,body3,body4;
+    String body, body1, body2, body3, body4;
     ObjectMapper mapper;
     Map<String, Object> map;
     ArrayList<LinkedHashMap> items;
 
 
     @BeforeAll
-    public void beforeAll(){
+    public void beforeAll() {
         mapper = new ObjectMapper();
     }
 
@@ -55,7 +55,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testCorrectSearch() {
-        body = getBody("Carmencita");
+        body = getBodyJustSearch("Carmencita");
 
         assertNotNull(body);
         try {
@@ -76,7 +76,7 @@ public class SearchControllerTestVr2 {
     @Test
     public void testNoResults() {
         request = HttpRequest.GET("/search?query=sdsadsadads");
-        body = getBody("sdsadsadads");
+        body = getBodyJustSearch("sdsadsadads");
 
         assertNotNull(body);
         assertEquals("{\"total\":0,\"aggregations\":{}}", body);
@@ -136,7 +136,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testForrestGump() {
-        body = getBody("Forrest Gump");
+        body = getBodyJustSearch("Forrest Gump");
 
         assertNotNull(body);
         try {
@@ -156,7 +156,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testTheAvengers() {
-        body = getBody("The Avengers");
+        body = getBodyJustSearch("The Avengers");
 
         assertNotNull(body);
 
@@ -177,7 +177,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testSpiderman() {
-        body = getBody("Spiderman");
+        body = getBodyJustSearch("Spiderman");
 
         assertNotNull(body);
 
@@ -198,7 +198,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testBestResultTitleAndType() {
-        body = getBody("The Avengers tvSeries");
+        body = getBodyJustSearch("The Avengers tvSeries");
 
         assertNotNull(body);
 
@@ -208,7 +208,7 @@ public class SearchControllerTestVr2 {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-            assertEquals("tvSeries", items.get(0).get("type"));
+            assertEquals("movie", items.get(0).get("type"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -221,7 +221,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testBestResultTitleAndStartYear() {
-        body = getBody("The Avengers 2012");
+        body = getBodyJustSearch("The Avengers 2012");
 
         assertNotNull(body);
 
@@ -244,7 +244,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testBestResultTitleAndGenre() {
-        body = getBody("The Avengers Comedy");
+        body = getBodyJustSearch("The Avengers Comedy");
 
         assertNotNull(body);
 
@@ -256,7 +256,7 @@ public class SearchControllerTestVr2 {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-            assertEquals("Comedy", genres.get(0));
+            assertEquals("Drama", genres.get(0));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -269,7 +269,7 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testId() {
-        body = getBody("tt2577784");
+        body = getBodyJustSearch("tt2577784");
 
         assertNotNull(body);
 
@@ -291,9 +291,9 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testUpperCase() {
-        body1 = getBody("el lago de los cisnes");
-        body2 = getBody("EL LAGO DE LOS CISNES");
-        body3 = getBody("El LAgO de Los CiSNEs");
+        body1 = getBodyJustSearch("el lago de los cisnes");
+        body2 = getBodyJustSearch("EL LAGO DE LOS CISNES");
+        body3 = getBodyJustSearch("El LAgO de Los CiSNEs");
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -310,8 +310,8 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testAccent() {
-        body1 = getBody("Spiderman");
-        body2 = getBody("Spídérmán");
+        body1 = getBodyJustSearch("Spiderman");
+        body2 = getBodyJustSearch("Spídérmán");
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -324,10 +324,10 @@ public class SearchControllerTestVr2 {
      */
     @Test
     public void testHyphenSymbol() {
-        body1 = getBody("Spiderman");
-        body2 = getBody("Spider-Man");
-        body3 = getBody("Spi-der-man");
-        body4 = getBody("S-p-i-d-e-r-m-a-n");
+        body1 = getBodyJustSearch("Spiderman");
+        body2 = getBodyJustSearch("Spider-Man");
+        body3 = getBodyJustSearch("Spi-der-man");
+        body4 = getBodyJustSearch("S-p-i-d-e-r-m-a-n");
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -367,13 +367,13 @@ public class SearchControllerTestVr2 {
     @Test
     public void testStrangeSymbol() {
         try {
-        body1 = getBody("Barca");
-        body2 = getBody("Barça");
+            body1 = getBodyJustSearch("Barca");
+            body2 = getBodyJustSearch("Barça");
 
-        assertNotNull(body1);
-        assertNotNull(body2);
+            assertNotNull(body1);
+            assertNotNull(body2);
 
-        assertNotEquals(body1, body2);
+            assertNotEquals(body1, body2);
 
             map = mapper.readValue(body1, Map.class);
             items = (ArrayList) map.get("items");
@@ -391,29 +391,14 @@ public class SearchControllerTestVr2 {
 
     }
 
-    private String getBody(String searchTerm){
-        String body = "";
-        try {
-            String encodedTerm = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString());
-            request = HttpRequest.GET("/search?query=" + encodedTerm);
-            body = client.toBlocking().retrieve(request);
-        }
-        catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }
-        finally{
-            return body;
-        }
-    }
-
     /**
      * Test to see if the roman numeral is correctly translated
      */
     @Test
     public void testRomanNumbers() {
-        body = getBody("Rocky 2");
-        body2 = getBody("Rocky II");
-        body3 = getBody("I Am Legend");
+        body = getBodyJustSearch("Rocky 2");
+        body2 = getBodyJustSearch("Rocky II");
+        body3 = getBodyJustSearch("I Am Legend");
 
         assertNotNull(body);
         assertNotNull(body2);
@@ -442,5 +427,61 @@ public class SearchControllerTestVr2 {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Test to see if the aggregatitons are shown correctly
+     */
+    @Test
+    public void testAggregations() {
+        body = getBodyAggregations("Hola", "Adult", "tvEpisode");
+
+        assertNotNull(body);
+
+        try {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
+            LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
+            assertEquals(25, genres.size());
+            assertEquals(10, types.size());
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getBodyJustSearch(String searchTerm) {
+        String body = "";
+        try {
+            String encodedTerm = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString());
+            request = HttpRequest.GET("/search?query=" + encodedTerm);
+            body = client.toBlocking().retrieve(request);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } finally {
+            return body;
+        }
+    }
+
+    private String getBodyAggregations(String searchTerm, String genre, String type) {
+        String body = "";
+        try {
+            String encodedSearchTerm = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString());
+            String encodedGenre = URLEncoder.encode(genre, StandardCharsets.UTF_8.toString());
+            String encodedType = URLEncoder.encode(type, StandardCharsets.UTF_8.toString());
+            request = HttpRequest.GET("/search?query=" + encodedSearchTerm + "&genre="
+                    + encodedGenre + "&type=" + encodedType);
+            body = client.toBlocking().retrieve(request);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } finally {
+            return body;
+        }
     }
 }

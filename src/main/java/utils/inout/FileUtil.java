@@ -14,6 +14,7 @@ public class FileUtil {
 
     /**
      * Method that reads a csv file and return a List with its lines
+     *
      * @param filePath Path of the csv
      * @return List of Strings with its lines
      * @throws IOException if there's an error
@@ -23,7 +24,7 @@ public class FileUtil {
         String line = fileReader.readLine();
 
         List<String> lines = new ArrayList<>();
-        while(line != null){
+        while (line != null) {
             lines.add(line);
 
             line = fileReader.readLine();

@@ -18,8 +18,8 @@ public class SearchTitlesJson {
     private final AggregationsJson aggregations;
 
     @JsonCreator
-    public SearchTitlesJson (@JsonProperty("total") int total, @JsonProperty ("items") TitleJson[] items,
-                             @JsonProperty ("aggregations") AggregationsJson aggregations){
+    public SearchTitlesJson(@JsonProperty("total") int total, @JsonProperty("items") TitleJson[] items,
+                            @JsonProperty("aggregations") AggregationsJson aggregations) {
         this.total = total;
         this.items = items;
         this.aggregations = aggregations;
@@ -33,7 +33,9 @@ public class SearchTitlesJson {
         return items;
     }
 
-    public AggregationsJson getAggregations(){return aggregations;}
+    public AggregationsJson getAggregations() {
+        return aggregations;
+    }
 
 
 }

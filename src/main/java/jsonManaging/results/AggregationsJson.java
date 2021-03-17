@@ -19,12 +19,12 @@ public class AggregationsJson {
     private final Map<String, Integer> types;
 
     @JsonCreator
-    public AggregationsJson (@JsonProperty("genres") Map<String, Integer> genres, @JsonProperty ("types") Map<String, Integer> types){
+    public AggregationsJson(@JsonProperty("genres") Map<String, Integer> genres, @JsonProperty("types") Map<String, Integer> types) {
         this.genres = genres;
         this.types = types;
     }
 
-    public Map<String, Integer> getGenres(){
+    public Map<String, Integer> getGenres() {
         return genres;
     }
 

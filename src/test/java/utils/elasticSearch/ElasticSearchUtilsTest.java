@@ -28,7 +28,7 @@ public class ElasticSearchUtilsTest {
      * client is always the same
      */
     @Test
-    public void testGetClient(){
+    public void testGetClient() {
         RestHighLevelClient client1 = elasticSearchUtils.getClientInstance();
         RestHighLevelClient client2 = elasticSearchUtils.getClientInstance();
         RestHighLevelClient client3 = elasticSearchUtils.getClientInstance();
@@ -37,8 +37,8 @@ public class ElasticSearchUtilsTest {
         assertNotNull(client2);
         assertNotNull(client3);
 
-        assertEquals(client1,client2);
-        assertEquals(client2,client3);
-        assertEquals(client1,client3);
+        assertEquals(client1, client2);
+        assertEquals(client2, client3);
+        assertEquals(client1, client3);
     }
 }

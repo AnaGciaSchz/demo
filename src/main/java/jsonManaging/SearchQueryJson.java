@@ -17,7 +17,7 @@ public class SearchQueryJson {
     private final String cluster_name;
 
     @JsonCreator
-    public SearchQueryJson (@JsonProperty("query") String query, @JsonProperty ("cluster_name") String cluster_name){
+    public SearchQueryJson(@JsonProperty("query") String query, @JsonProperty("cluster_name") String cluster_name) {
         this.query = query;
         this.cluster_name = cluster_name;
     }

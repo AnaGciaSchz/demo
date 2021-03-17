@@ -21,9 +21,9 @@ public class TitleJson {
     private final String end_year;
 
     @JsonCreator
-    public TitleJson (@JsonProperty("id") Object id, @JsonProperty ("title") Object title,
-                      @JsonProperty ("genres") Object genres,@JsonProperty ("type") Object type,
-                      @JsonProperty ("start_year") Object start_year, @JsonProperty ("end_year") Object end_year){
+    public TitleJson(@JsonProperty("id") Object id, @JsonProperty("title") Object title,
+                     @JsonProperty("genres") Object genres, @JsonProperty("type") Object type,
+                     @JsonProperty("start_year") Object start_year, @JsonProperty("end_year") Object end_year) {
         String[] genresArray = ((String) genres).split(",");
         this.id = (String) id;
         this.title = (String) title;

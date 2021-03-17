@@ -6,25 +6,25 @@
         "search_analyzer": "title_search_analyzer",
         "analyzer": "title_analyzer"
       },
-	"primaryTitle": {
+      "primaryTitle": {
         "type": "text",
         "search_analyzer": "title_search_analyzer",
         "analyzer": "title_analyzer"
       },
-	"titleType": {
-      "type": "keyword",
-      "normalizer": "my_normalizer"
-      },
-	"genres": {
+      "titleType": {
         "type": "keyword",
         "normalizer": "my_normalizer"
       },
-	"start_year": {
+      "genres": {
+        "type": "keyword",
+        "normalizer": "my_normalizer"
+      },
+      "start_year": {
         "type": "text",
         "search_analyzer": "title_search_analyzer",
         "analyzer": "title_analyzer"
       },
-	"end_year": {
+      "end_year": {
         "type": "text",
         "search_analyzer": "title_search_analyzer",
         "analyzer": "title_analyzer"
@@ -37,75 +37,94 @@
         "my_normalizer": {
           "type": "custom",
           "char_filter": [],
-          "filter": ["lowercase", "asciifolding"]
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
         }
       },
       "analyzer": {
         "title_search_analyzer": {
           "type": "custom",
           "tokenizer": "whitespace",
-          "char_filter": ["my_char_filter"],
-          "filter": ["lowercase","word-delimiter-custom","flatten_graph","spanish_stemmer"]
+          "char_filter": [
+            "my_char_filter"
+          ],
+          "filter": [
+            "lowercase",
+            "word-delimiter-custom",
+            "flatten_graph",
+            "spanish_stemmer"
+          ]
         },
         "title_analyzer": {
           "type": "custom",
           "tokenizer": "whitespace",
-          "char_filter": ["my_char_filter"],
-          "filter": ["lowercase","my_synonym_graph","flatten_graph","word-delimiter-custom","flatten_graph","my_ascii_folding","spanish_stemmer"]
+          "char_filter": [
+            "my_char_filter"
+          ],
+          "filter": [
+            "lowercase",
+            "my_synonym_graph",
+            "flatten_graph",
+            "word-delimiter-custom",
+            "flatten_graph",
+            "my_ascii_folding",
+            "spanish_stemmer"
+          ]
         }
       },
-   "filter":{
-	"spanish_stemmer":{
-	   "type": "stemmer",
-	   "language": "spanish"
-	},
-    "my_synonym_graph": {
-        "type": "synonym_graph",
-        "lenient": true,
-        "synonyms": [
-           "I => 1, I",
-           "II => 2, II",
-           "III => 3, III",
-           "IV => 4, IV",
-           "V => 5, V",
-           "VI => 6, VI",
-           "VII => 7, VII",
-           "VIII => 8, VIII",
-           "IX => 9, IX",
-           "X => 10, X",
-           "XI => 11, XI",
-           "XII => 12, XII",
-           "XIII => 13, XIII",
-           "XIV => 14, XIV",
-           "XV => 15, XV"
-         ]
-       },
-	"word-delimiter-custom":{
-	   "type":"word_delimiter_graph",
-	   "preserve_original":"true",
-	   "catenate_all": "true"
-	},
-    "my_ascii_folding": {
-      "type": "asciifolding",
-      "preserve_original": true
+      "filter": {
+        "spanish_stemmer": {
+          "type": "stemmer",
+          "language": "spanish"
+        },
+        "my_synonym_graph": {
+          "type": "synonym_graph",
+          "lenient": true,
+          "synonyms": [
+            "I => 1, I",
+            "II => 2, II",
+            "III => 3, III",
+            "IV => 4, IV",
+            "V => 5, V",
+            "VI => 6, VI",
+            "VII => 7, VII",
+            "VIII => 8, VIII",
+            "IX => 9, IX",
+            "X => 10, X",
+            "XI => 11, XI",
+            "XII => 12, XII",
+            "XIII => 13, XIII",
+            "XIV => 14, XIV",
+            "XV => 15, XV"
+          ]
+        },
+        "word-delimiter-custom": {
+          "type": "word_delimiter_graph",
+          "preserve_original": "true",
+          "catenate_all": "true"
+        },
+        "my_ascii_folding": {
+          "type": "asciifolding",
+          "preserve_original": true
+        }
+      },
+      "char_filter": {
+        "my_char_filter": {
+          "type": "mapping",
+          "mappings": [
+            ", => ",
+            ". => ",
+            "_ => ",
+            ": => ",
+            "¿ => ",
+            "? => ",
+            "¡ => ",
+            "! => "
+          ]
+        }
+      }
     }
-  },
-  "char_filter":{
-	"my_char_filter":{
-	  "type":"mapping",
-	  "mappings":[
-	   ", => ",
-	   ". => ",
-	   "_ => ",
-       ": => ",
-       "¿ => ",
-       "? => ",
-       "¡ => ",
-       "! => "
-
-      ]
-     }
-    }
-   }
   }
 }
