@@ -1,11 +1,6 @@
 package com.main;
 
 import io.micronaut.runtime.Micronaut;
-import utils.elasticSearch.manageIndex.CreateElasticSearchIndex;
-import utils.elasticSearch.manageIndex.DeleteElasticSearchInformation;
-import utils.elasticSearch.manageIndex.LoadElasticSearchInformation;
-
-import java.io.IOException;
 
 /**
  * Class that runs the application with its main method
@@ -19,7 +14,7 @@ public class Application {
      *
      * @param args parameters for the application
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
 
         Micronaut.run(Application.class, args);
 /**

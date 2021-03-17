@@ -34,12 +34,12 @@ public class SearchController {
      */
     @Get(produces = MediaType.APPLICATION_JSON)
     public HttpResponse index(@QueryValue String query, @Nullable @QueryValue String genre, @Nullable @QueryValue String type) {
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         parameters.put("query", query);
-        if (genre != null && genre != "") {
+        if (genre != null && !("").equals(genre)) {
             parameters.put("genre", genre);
         }
-        if (type != null && type != "") {
+        if (type != null && !("").equals(type)) {
             parameters.put("type", type);
         }
 

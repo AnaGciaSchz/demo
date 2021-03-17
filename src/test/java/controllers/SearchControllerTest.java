@@ -41,7 +41,7 @@ public class SearchControllerTest {
     HttpRequest<String> request;
     String body, body1, body2, body3, body4;
     ObjectMapper mapper;
-    Map<String, Object> map;
+    Map map;
     ArrayList<LinkedHashMap> items;
 
 
@@ -55,7 +55,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testCorrectSearch() {
-        body = getBodyJustSearch("Carmencita");
+        body = getBody("Carmencita", null, null);
 
         assertNotNull(body);
         try {
@@ -76,7 +76,7 @@ public class SearchControllerTest {
     @Test
     public void testNoResults() {
         request = HttpRequest.GET("/search?query=sdsadsadads");
-        body = getBodyJustSearch("sdsadsadads");
+        body = getBody("sdsadsadads", null, null);
 
         assertNotNull(body);
         assertEquals("{\"total\":0,\"aggregations\":{}}", body);
@@ -136,7 +136,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testForrestGump() {
-        body = getBodyJustSearch("Forrest Gump");
+        body = getBody("Forrest Gump", null, null);
 
         assertNotNull(body);
         try {
@@ -156,7 +156,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testTheAvengers() {
-        body = getBodyJustSearch("The Avengers");
+        body = getBody("The Avengers", null, null);
 
         assertNotNull(body);
 
@@ -177,7 +177,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testSpiderman() {
-        body = getBodyJustSearch("Spiderman");
+        body = getBody("Spiderman", null, null);
 
         assertNotNull(body);
 
@@ -198,7 +198,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testBestResultTitleAndType() {
-        body = getBodyJustSearch("The Avengers tvSeries");
+        body = getBody("The Avengers tvSeries", null, null);
 
         assertNotNull(body);
 
@@ -221,7 +221,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testBestResultTitleAndStartYear() {
-        body = getBodyJustSearch("The Avengers 2012");
+        body = getBody("The Avengers 2012", null, null);
 
         assertNotNull(body);
 
@@ -244,7 +244,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testBestResultTitleAndGenre() {
-        body = getBodyJustSearch("The Avengers Comedy");
+        body = getBody("The Avengers Comedy", null, null);
 
         assertNotNull(body);
 
@@ -269,7 +269,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testId() {
-        body = getBodyJustSearch("tt2577784");
+        body = getBody("tt2577784", null, null);
 
         assertNotNull(body);
 
@@ -291,9 +291,9 @@ public class SearchControllerTest {
      */
     @Test
     public void testUpperCase() {
-        body1 = getBodyJustSearch("el lago de los cisnes");
-        body2 = getBodyJustSearch("EL LAGO DE LOS CISNES");
-        body3 = getBodyJustSearch("El LAgO de Los CiSNEs");
+        body1 = getBody("el lago de los cisnes", null, null);
+        body2 = getBody("EL LAGO DE LOS CISNES", null, null);
+        body3 = getBody("El LAgO de Los CiSNEs", null, null);
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -310,8 +310,8 @@ public class SearchControllerTest {
      */
     @Test
     public void testAccent() {
-        body1 = getBodyJustSearch("Spiderman");
-        body2 = getBodyJustSearch("Spídérmán");
+        body1 = getBody("Spiderman", null, null);
+        body2 = getBody("Spídérmán", null, null);
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -324,10 +324,10 @@ public class SearchControllerTest {
      */
     @Test
     public void testHyphenSymbol() {
-        body1 = getBodyJustSearch("Spiderman");
-        body2 = getBodyJustSearch("Spider-Man");
-        body3 = getBodyJustSearch("Spi-der-man");
-        body4 = getBodyJustSearch("S-p-i-d-e-r-m-a-n");
+        body1 = getBody("Spiderman", null, null);
+        body2 = getBody("Spider-Man", null, null);
+        body3 = getBody("Spi-der-man", null, null);
+        body4 = getBody("S-p-i-d-e-r-m-a-n", null, null);
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -367,8 +367,8 @@ public class SearchControllerTest {
     @Test
     public void testStrangeSymbol() {
         try {
-            body1 = getBodyJustSearch("Barca");
-            body2 = getBodyJustSearch("Barça");
+            body1 = getBody("Barca", null, null);
+            body2 = getBody("Barça", null, null);
 
             assertNotNull(body1);
             assertNotNull(body2);
@@ -396,9 +396,9 @@ public class SearchControllerTest {
      */
     @Test
     public void testRomanNumbers() {
-        body = getBodyJustSearch("Rocky 2");
-        body2 = getBodyJustSearch("Rocky II");
-        body3 = getBodyJustSearch("I Am Legend");
+        body = getBody("Rocky 2", null, null);
+        body2 = getBody("Rocky II", null, null);
+        body3 = getBody("I Am Legend", null, null);
 
         assertNotNull(body);
         assertNotNull(body2);
@@ -434,7 +434,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testAggregations() {
-        body = getBodyAggregations("Hola", "Adult", "tvEpisode");
+        body = getBody("Hola", "Adult", "tvEpisode");
 
         assertNotNull(body);
 
@@ -456,27 +456,81 @@ public class SearchControllerTest {
 
     }
 
-    private String getBodyJustSearch(String searchTerm) {
-        String body = "";
+    /**
+     * Test to see if the aggregations are shown correctly when the user doesnt want the genre
+     */
+    @Test
+    public void testAggregationsNoGenre() {
+        body = getBody("Hola", null, "tvEpisode");
+
+        assertNotNull(body);
+
         try {
-            String encodedTerm = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString());
-            request = HttpRequest.GET("/search?query=" + encodedTerm);
-            body = client.toBlocking().retrieve(request);
-        } catch (UnsupportedEncodingException e) {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
+            LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
+            assertEquals(null, genres);
+            assertEquals(10, types.size());
+
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
-        } finally {
-            return body;
         }
     }
 
-    private String getBodyAggregations(String searchTerm, String genre, String type) {
+    /**
+     * Test to see if the aggregations are shown correctly when the user doesnt want the type
+     */
+    @Test
+    public void testAggregationsNoType() {
+        body = getBody("Hola", "Adult", null);
+
+        assertNotNull(body);
+
+        try {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
+            LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
+            assertEquals(25, genres.size());
+            assertEquals(null, types);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to get the body of a search with thee search param and possible genre and type aggregations
+     *
+     * @param searchTerm term to search
+     * @param genre      genre to search
+     * @param type       type to search
+     * @return body of the response
+     */
+    private String getBody(String searchTerm, String genre, String type) {
         String body = "";
+        String uri = "/search?query=";
         try {
             String encodedSearchTerm = URLEncoder.encode(searchTerm, StandardCharsets.UTF_8.toString());
-            String encodedGenre = URLEncoder.encode(genre, StandardCharsets.UTF_8.toString());
-            String encodedType = URLEncoder.encode(type, StandardCharsets.UTF_8.toString());
-            request = HttpRequest.GET("/search?query=" + encodedSearchTerm + "&genre="
-                    + encodedGenre + "&type=" + encodedType);
+            uri += encodedSearchTerm;
+            if (genre != null) {
+                String encodedGenre = URLEncoder.encode(genre, StandardCharsets.UTF_8.toString());
+                uri += "&genre=" + encodedGenre;
+            }
+            if (type != null) {
+                String encodedType = URLEncoder.encode(type, StandardCharsets.UTF_8.toString());
+                uri += "&type=" + encodedType;
+            }
+            request = HttpRequest.GET(uri);
             body = client.toBlocking().retrieve(request);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
