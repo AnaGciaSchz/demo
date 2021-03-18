@@ -1,5 +1,6 @@
 package utils.elasticSearch.search;
 
+import io.micronaut.http.server.exceptions.InternalServerException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -8,6 +9,8 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.range.Range;
+import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import utils.elasticSearch.ElasticSearchUtilsInterface;
@@ -32,7 +35,7 @@ public class SearchElastic {
      * @throws IOException I there is an error
      */
     public Map<String, Object> searchImdb(Map<String, String> parameters) throws IOException {
-        String[] fields = {"index", "primaryTitle", "genres", "titleType", "start_year", "end_year"};
+        String[] fields = {"index", "primaryTitle", "genres", "titleType"}; //, "start_year", "end_year" ????
 
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.indices("imdb");
@@ -40,13 +43,16 @@ public class SearchElastic {
         if (parameters.keySet().size() == 1) {
             searchRequest.source(searchInEveryfield(fields, parameters.get("query")));
         } else {
-
             searchRequest.source(searchInEveryfieldWithImdbParameters(fields, parameters));
         }
 
         RestHighLevelClient client = elasticSearchUtils.getClientInstance();
-
-        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        SearchResponse response;
+        try {
+            response = client.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (InternalServerException e) {
+            return new HashMap<String, Object>();
+        }
 
         return getHitsAndAggregations(response);
     }
@@ -64,32 +70,35 @@ public class SearchElastic {
         BoolQueryBuilder query = new BoolQueryBuilder();
         query.should(QueryBuilders.multiMatchQuery(parameters.get("query"), fields).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS));
 
-        BoolQueryBuilder genre = null;
-        BoolQueryBuilder type = null;
+        BoolQueryBuilder date = null;
 
-        AggregationBuilder aggbuilderGenres = null;
-        AggregationBuilder aggbuilderTypes = null;
+        AggregationBuilder aggbuilderDate = null;
+
 
         if (parameters.get("genre") != null) {
-            String[] genres = parameters.get("genre").split(",");
-            genre = QueryBuilders.boolQuery();
-            for (int i = 0; i < genres.length; i++) {
-                genre.should(QueryBuilders.termQuery("genres", genres[i]));
-            }
-
-            aggbuilderGenres = AggregationBuilders.terms("genreAggregation").field("genres").size(26);
-            sourceBuilder.aggregation(aggbuilderGenres);
-            query.should(genre);
+            Map<String, Object> map = createAggregationAndQuery(parameters.get("genre"), "genreAggregation", "genres", 26);
+            sourceBuilder.aggregation((AggregationBuilder) map.get("aggregation"));
+            query.must((QueryBuilder) map.get("query"));
         }
         if (parameters.get("type") != null) {
-            String[] types = parameters.get("type").split(",");
-            type = QueryBuilders.boolQuery();
-            for (int i = 0; i < types.length; i++) {
-                type.should(QueryBuilders.termQuery("titleType", types[i]));
+            Map<String, Object> map = createAggregationAndQuery(parameters.get("type"), "titleTypeAggregation", "titleType", 11);
+            sourceBuilder.aggregation((AggregationBuilder) map.get("aggregation"));
+            query.must((QueryBuilder) map.get("query"));
+        }
+
+        if (parameters.get("date") != null) {
+            String[] dates = parameters.get("date").split(",");
+            RangeAggregationBuilder aggDates = AggregationBuilders.range("dateRange").field("start_year");
+            for (int i = 0; i < dates.length; i++) {
+                String[] decade = dates[i].split("/");
+                int to = Integer.parseInt(decade[1]);
+                int from = Integer.parseInt(decade[0]);
+
+                query.must(QueryBuilders.rangeQuery("start_year").gte(from).lte(to));
+
+                aggDates.addRange(from, to);
             }
-            aggbuilderTypes = AggregationBuilders.terms("titleTypeAggregation").field("titleType").size(11);
-            sourceBuilder.aggregation(aggbuilderTypes);
-            query.should(type);
+            sourceBuilder.aggregation(aggDates);
         }
 
         sourceBuilder.query(query);
@@ -154,11 +163,48 @@ public class SearchElastic {
                     t.put(key, number);
                 }
 
-
                 results.put("types", t);
+
+            }
+
+            Range dateRange = response.getAggregations().get("dateRange");
+            if (dateRange != null) {
+                Map<String, Integer> t = new HashMap();
+                Collection<Range.Bucket> datesBuckets = (Collection<Range.Bucket>) dateRange.getBuckets();
+
+                for (var date : datesBuckets) {
+                    String key = (String) date.getKey();
+                    int number = (int) date.getDocCount();
+                    t.put(key, number);
+                }
+
+
+                results.put("dates", t);
 
             }
         }
         return results;
+    }
+
+    /**
+     * Method that creates the aggregation and query of a term aggregation and using should.
+     *
+     * @param string string with the temrs separated by ,
+     * @param name   Name of the aggregation
+     * @param field  Field to search the terms
+     * @param size   Size of the results
+     * @return map with the query (key=query) and aggregation (key=aggregation)
+     */
+    private Map<String, Object> createAggregationAndQuery(String string, String name, String field, int size) {
+        String[] array = string.split(",");
+        Map<String, Object> result = new HashMap<>();
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        for (int i = 0; i < array.length; i++) {
+            builder.should(QueryBuilders.termQuery(field, array[i]));
+        }
+        result.put("query", builder);
+        result.put("aggregation", AggregationBuilders.terms(name).field(field).size(size));
+
+        return result;
     }
 }

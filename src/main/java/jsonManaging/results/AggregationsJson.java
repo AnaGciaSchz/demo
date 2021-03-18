@@ -17,18 +17,18 @@ public class AggregationsJson {
 
     private final Map<String, Integer> genres;
     private final Map<String, Integer> types;
+    private final Map<String, Integer> dates;
 
     @JsonCreator
-    public AggregationsJson(@JsonProperty("genres") Map<String, Integer> genres, @JsonProperty("types") Map<String, Integer> types) {
+    public AggregationsJson(@JsonProperty("genres") Map<String, Integer> genres, @JsonProperty("types") Map<String, Integer> types, @JsonProperty("dates") Map<String, Integer> dates) {
         this.genres = genres;
         this.types = types;
+        this.dates = dates;
     }
 
-    public Map<String, Integer> getGenres() {
-        return genres;
-    }
-
+    public Map<String, Integer> getGenres() { return genres; }
     public Map<String, Integer> getTypes() {
         return types;
     }
+    public Map<String, Integer> getDates() { return dates; }
 }

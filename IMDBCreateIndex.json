@@ -20,14 +20,10 @@
         "normalizer": "my_normalizer"
       },
       "start_year": {
-        "type": "text",
-        "search_analyzer": "title_search_analyzer",
-        "analyzer": "title_analyzer"
+        "type": "integer"
       },
       "end_year": {
-        "type": "text",
-        "search_analyzer": "title_search_analyzer",
-        "analyzer": "title_analyzer"
+        "type": "integer"
       }
     }
   },

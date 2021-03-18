@@ -256,7 +256,7 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-            assertEquals("Drama", genres.get(0));
+                assertEquals("Action", genres.get(0));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -502,6 +502,32 @@ public class SearchControllerTest {
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
             assertEquals(25, genres.size());
             assertEquals(null, types);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Test to see if the aggregations are shown correctly when the user doesnt want the type
+     */
+    @Test
+    public void testVariousAggregations() {
+        body = getBody("Hola", "Music,Game", "tvSeries,tvEpisode");
+
+        assertNotNull(body);
+
+        try {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
+            LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
+            assertEquals(25, genres.size());
+            assertEquals(10, types.size());
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

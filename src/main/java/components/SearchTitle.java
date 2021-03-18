@@ -65,8 +65,9 @@ public class SearchTitle implements BusinessLogicJsonComponent {
 
         Map<String, Integer> genres = (Map<String, Integer>) results.get("genres");
         Map<String, Integer> types = (Map<String, Integer>) results.get("types");
+        Map<String, Integer> dates = (Map<String, Integer>) results.get("dates");
 
-        AggregationsJson a = new AggregationsJson(genres, types);
+        AggregationsJson a = new AggregationsJson(genres, types, dates);
         return new SearchTitlesJson(titles.length, titles, a);
     }
 }

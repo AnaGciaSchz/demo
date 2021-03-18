@@ -1,6 +1,11 @@
 package com.main;
 
 import io.micronaut.runtime.Micronaut;
+import utils.elasticSearch.manageIndex.CreateElasticSearchIndex;
+import utils.elasticSearch.manageIndex.DeleteElasticSearchInformation;
+import utils.elasticSearch.manageIndex.LoadElasticSearchInformation;
+
+import java.io.IOException;
 
 /**
  * Class that runs the application with its main method
@@ -14,7 +19,7 @@ public class Application {
      *
      * @param args parameters for the application
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
 /**
@@ -22,6 +27,8 @@ public class Application {
  d.deleteInformation("imdb");
 
  System.out.println("deleted");
+
+
 
  CreateElasticSearchIndex c = new CreateElasticSearchIndex();
  c.createImdbIndex("./IMDBCreateIndex.json");
@@ -32,7 +39,7 @@ public class Application {
  l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
 
  System.out.println("inserted");
- */
+*/
 
 
     }

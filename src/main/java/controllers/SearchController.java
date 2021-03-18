@@ -6,6 +6,7 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
+import utils.CheckValueInterface;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -23,6 +24,9 @@ public class SearchController {
     @Inject
     SearchTitle searchTitle;
 
+    @Inject
+    CheckValueInterface checkValue;
+
     /**
      * Method that answers the /search url that has a "query" param.
      * /search?query={value}
@@ -33,14 +37,17 @@ public class SearchController {
      * @return A JSON response
      */
     @Get(produces = MediaType.APPLICATION_JSON)
-    public HttpResponse index(@QueryValue String query, @Nullable @QueryValue String genre, @Nullable @QueryValue String type) {
+    public HttpResponse index(@QueryValue String query, @Nullable @QueryValue String genre, @Nullable @QueryValue String type, @Nullable @QueryValue String date) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("query", query);
-        if (genre != null && !("").equals(genre)) {
+        if (!checkValue.isEmpty(genre)) {
             parameters.put("genre", genre);
         }
-        if (type != null && !("").equals(type)) {
+        if (!checkValue.isEmpty(type)) {
             parameters.put("type", type);
+        }
+        if (!checkValue.isEmpty(date)) {
+            parameters.put("date", date);
         }
 
         return searchTitle.getQueryJson(parameters);
