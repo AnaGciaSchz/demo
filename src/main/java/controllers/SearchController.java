@@ -1,11 +1,13 @@
 package controllers;
 
 import components.SearchTitle;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.hateoas.JsonError;
 import utils.CheckValueInterface;
 
 import javax.annotation.Nullable;
@@ -19,7 +21,7 @@ import java.util.Map;
  * @Author Ana Garcia
  */
 @Controller("/search")
-public class SearchController {
+public class SearchController extends BasicController{
 
     @Inject
     SearchTitle searchTitle;
@@ -38,19 +40,18 @@ public class SearchController {
      */
     @Get(produces = MediaType.APPLICATION_JSON)
     public HttpResponse index(@QueryValue String query, @Nullable @QueryValue String genre, @Nullable @QueryValue String type, @Nullable @QueryValue String date) {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("query", query);
-        if (!checkValue.isEmpty(genre)) {
-            parameters.put("genre", genre);
-        }
-        if (!checkValue.isEmpty(type)) {
-            parameters.put("type", type);
-        }
-        if (!checkValue.isEmpty(date)) {
-            parameters.put("date", date);
-        }
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("query", query);
+            if (!checkValue.isEmpty(genre)) {
+                parameters.put("genre", genre);
+            }
+            if (!checkValue.isEmpty(type)) {
+                parameters.put("type", type);
+            }
+            if (!checkValue.isEmpty(date)) {
+                parameters.put("date", date);
+            }
 
-        return searchTitle.getQueryJson(parameters);
+            return searchTitle.getQueryJson(parameters);
     }
-
 }
