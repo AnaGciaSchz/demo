@@ -24,6 +24,16 @@
       },
       "end_year": {
         "type": "integer"
+      },
+      "start_yearText": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
+      },
+      "end_yearText": {
+        "type": "text",
+        "search_analyzer": "title_search_analyzer",
+        "analyzer": "title_analyzer"
       }
     }
   },

@@ -87,17 +87,21 @@ public class SearchElastic {
         }
 
         if (parameters.get("date") != null) {
+            BoolQueryBuilder datesQuery = new BoolQueryBuilder();
             String[] dates = parameters.get("date").split(",");
             RangeAggregationBuilder aggDates = AggregationBuilders.range("dateRange").field("start_year");
+            RangeQueryBuilder rangeDates = new RangeQueryBuilder("start_year");
             for (int i = 0; i < dates.length; i++) {
                 String[] decade = dates[i].split("/");
                 int to = Integer.parseInt(decade[1]);
                 int from = Integer.parseInt(decade[0]);
-
-                query.must(QueryBuilders.rangeQuery("start_year").gte(from).lte(to));
+                rangeDates.gte(from);
+                rangeDates.lte(to);
+                datesQuery.should(rangeDates);
 
                 aggDates.addRange(from, to);
             }
+            query.should(datesQuery);
             sourceBuilder.aggregation(aggDates);
         }
 
