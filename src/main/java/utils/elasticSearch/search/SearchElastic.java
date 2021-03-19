@@ -70,11 +70,6 @@ public class SearchElastic {
         BoolQueryBuilder query = new BoolQueryBuilder();
         query.should(QueryBuilders.multiMatchQuery(parameters.get("query"), fields).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS));
 
-        BoolQueryBuilder date = null;
-
-        AggregationBuilder aggbuilderDate = null;
-
-
         if (parameters.get("genre") != null) {
             Map<String, Object> map = createAggregationAndQuery(parameters.get("genre"), "genreAggregation", "genres", 26);
             sourceBuilder.aggregation((AggregationBuilder) map.get("aggregation"));
@@ -88,9 +83,12 @@ public class SearchElastic {
 
         if (parameters.get("date") != null) {
             BoolQueryBuilder datesQuery = new BoolQueryBuilder();
+
             String[] dates = parameters.get("date").split(",");
+
             RangeAggregationBuilder aggDates = AggregationBuilders.range("dateRange").field("start_year");
             RangeQueryBuilder rangeDates = new RangeQueryBuilder("start_year");
+
             for (int i = 0; i < dates.length; i++) {
                 String[] decade = dates[i].split("/");
                 int to = Integer.parseInt(decade[1]);
@@ -187,9 +185,7 @@ public class SearchElastic {
                     }
                 }
 
-
                 results.put("dates", t);
-
             }
         }
         return results;

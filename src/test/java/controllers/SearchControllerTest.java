@@ -55,7 +55,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testCorrectSearch() {
-        body = getBody("Carmencita", null, null);
+        body = getBody("Carmencita", null, null,null);
 
         assertNotNull(body);
         try {
@@ -76,7 +76,7 @@ public class SearchControllerTest {
     @Test
     public void testNoResults() {
         request = HttpRequest.GET("/search?query=sdsadsadads");
-        body = getBody("sdsadsadads", null, null);
+        body = getBody("sdsadsadads", null, null,null);
 
         assertNotNull(body);
         assertEquals("{\"total\":0,\"aggregations\":{}}", body);
@@ -136,7 +136,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testForrestGump() {
-        body = getBody("Forrest Gump", null, null);
+        body = getBody("Forrest Gump", null, null,null);
 
         assertNotNull(body);
         try {
@@ -156,7 +156,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testTheAvengers() {
-        body = getBody("The Avengers", null, null);
+        body = getBody("The Avengers", null, null,null);
 
         assertNotNull(body);
 
@@ -177,7 +177,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testSpiderman() {
-        body = getBody("Spiderman", null, null);
+        body = getBody("Spiderman", null, null,null);
 
         assertNotNull(body);
 
@@ -198,7 +198,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testBestResultTitleAndType() {
-        body = getBody("The Avengers tvSeries", null, null);
+        body = getBody("The Avengers tvSeries", null, null,null);
 
         assertNotNull(body);
 
@@ -221,7 +221,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testBestResultTitleAndStartYear() {
-        body = getBody("The Avengers 2012", null, null);
+        body = getBody("The Avengers 2012", null, null,null);
 
         assertNotNull(body);
 
@@ -230,8 +230,7 @@ public class SearchControllerTest {
             items = (ArrayList) map.get("items");
 
             assertEquals(10, map.get("total"));
-            assertEquals("The Avengers", items.get(0).get("title"));
-            assertEquals("2012", items.get(0).get("start_year"));
+            assertEquals("Marvel's The Avengers (2012)", items.get(0).get("title"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -244,7 +243,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testBestResultTitleAndGenre() {
-        body = getBody("The Avengers Comedy", null, null);
+        body = getBody("The Avengers Comedy", null, null,null);
 
         assertNotNull(body);
 
@@ -269,7 +268,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testId() {
-        body = getBody("tt2577784", null, null);
+        body = getBody("tt2577784", null, null,null);
 
         assertNotNull(body);
 
@@ -291,9 +290,9 @@ public class SearchControllerTest {
      */
     @Test
     public void testUpperCase() {
-        body1 = getBody("el lago de los cisnes", null, null);
-        body2 = getBody("EL LAGO DE LOS CISNES", null, null);
-        body3 = getBody("El LAgO de Los CiSNEs", null, null);
+        body1 = getBody("el lago de los cisnes", null, null,null);
+        body2 = getBody("EL LAGO DE LOS CISNES", null, null,null);
+        body3 = getBody("El LAgO de Los CiSNEs", null, null,null);
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -310,8 +309,8 @@ public class SearchControllerTest {
      */
     @Test
     public void testAccent() {
-        body1 = getBody("Spiderman", null, null);
-        body2 = getBody("Spídérmán", null, null);
+        body1 = getBody("Spiderman", null, null,null);
+        body2 = getBody("Spídérmán", null, null,null);
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -324,10 +323,10 @@ public class SearchControllerTest {
      */
     @Test
     public void testHyphenSymbol() {
-        body1 = getBody("Spiderman", null, null);
-        body2 = getBody("Spider-Man", null, null);
-        body3 = getBody("Spi-der-man", null, null);
-        body4 = getBody("S-p-i-d-e-r-m-a-n", null, null);
+        body1 = getBody("Spiderman", null, null,null);
+        body2 = getBody("Spider-Man", null, null,null);
+        body3 = getBody("Spi-der-man", null, null,null);
+        body4 = getBody("S-p-i-d-e-r-m-a-n", null, null,null);
 
         assertNotNull(body1);
         assertNotNull(body2);
@@ -367,8 +366,8 @@ public class SearchControllerTest {
     @Test
     public void testStrangeSymbol() {
         try {
-            body1 = getBody("Barca", null, null);
-            body2 = getBody("Barça", null, null);
+            body1 = getBody("Barca", null, null,null);
+            body2 = getBody("Barça", null, null,null);
 
             assertNotNull(body1);
             assertNotNull(body2);
@@ -383,7 +382,7 @@ public class SearchControllerTest {
             map = mapper.readValue(body2, Map.class);
             items = (ArrayList) map.get("items");
             assertEquals(10, map.get("total"));
-            assertEquals("Barça", items.get(0).get("title"));
+            assertEquals("Força Barça", items.get(0).get("title"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -396,9 +395,9 @@ public class SearchControllerTest {
      */
     @Test
     public void testRomanNumbers() {
-        body = getBody("Rocky 2", null, null);
-        body2 = getBody("Rocky II", null, null);
-        body3 = getBody("I Am Legend", null, null);
+        body = getBody("Rocky 2", null, null,null);
+        body2 = getBody("Rocky II", null, null,null);
+        body3 = getBody("I Am Legend", null, null,null);
 
         assertNotNull(body);
         assertNotNull(body2);
@@ -434,7 +433,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testAggregations() {
-        body = getBody("Hola", "Adult", "tvEpisode");
+        body = getBody("Hola", "Adult", "tvEpisode",null);
 
         assertNotNull(body);
 
@@ -461,7 +460,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testAggregationsNoGenre() {
-        body = getBody("Hola", null, "tvEpisode");
+        body = getBody("Hola", null, "tvEpisode",null);
 
         assertNotNull(body);
 
@@ -487,7 +486,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testAggregationsNoType() {
-        body = getBody("Hola", "Adult", null);
+        body = getBody("Hola", "Adult", null,null);
 
         assertNotNull(body);
 
@@ -513,7 +512,7 @@ public class SearchControllerTest {
      */
     @Test
     public void testVariousAggregations() {
-        body = getBody("Hola", "Music,Game", "tvSeries,tvEpisode");
+        body = getBody("Hola", "Music,Game", "tvSeries,tvEpisode",null);
 
         assertNotNull(body);
 
@@ -526,8 +525,56 @@ public class SearchControllerTest {
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
-            assertEquals(2, genres.size());
+            assertEquals(1, genres.size());
             assertEquals(2, types.size());
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Test to see if the date filter is correctly working
+     */
+    @Test
+    public void testDateFilter() {
+        body = getBody("Hola", null, null,"1990/1999");
+
+        assertNotNull(body);
+
+        try {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap dates = (LinkedHashMap) aggregations.get("dates");
+            assertEquals("1997", items.get(0).get("start_year"));
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Test to see if the date aggregation is correctly working
+     */
+    @Test
+    public void testDateAggregation() {
+        body = getBody("Hola", null, null,"1990/1999");
+
+        assertNotNull(body);
+
+        try {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap dates = (LinkedHashMap) aggregations.get("dates");
+            assertEquals(13, dates.size());
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -542,7 +589,7 @@ public class SearchControllerTest {
      * @param type       type to search
      * @return body of the response
      */
-    private String getBody(String searchTerm, String genre, String type) {
+    private String getBody(String searchTerm, String genre, String type, String date) {
         String body = "";
         String uri = "/search?query=";
         try {
@@ -555,6 +602,9 @@ public class SearchControllerTest {
             if (type != null) {
                 String encodedType = URLEncoder.encode(type, StandardCharsets.UTF_8.toString());
                 uri += "&type=" + encodedType;
+            }if (date != null) {
+                String encodedType = URLEncoder.encode(date, StandardCharsets.UTF_8.toString());
+                uri += "&date=" + encodedType;
             }
             request = HttpRequest.GET(uri);
             body = client.toBlocking().retrieve(request);
