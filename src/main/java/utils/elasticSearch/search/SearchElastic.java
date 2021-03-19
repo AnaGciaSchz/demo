@@ -95,13 +95,16 @@ public class SearchElastic {
                 String[] decade = dates[i].split("/");
                 int to = Integer.parseInt(decade[1]);
                 int from = Integer.parseInt(decade[0]);
+
                 rangeDates.gte(from);
                 rangeDates.lte(to);
                 datesQuery.should(rangeDates);
-
-                aggDates.addRange(from, to);
             }
             query.should(datesQuery);
+
+            for(int i = 0; i<2021; i+=10){
+                aggDates.addRange(i, i+10);
+            }
             sourceBuilder.aggregation(aggDates);
         }
 
@@ -179,7 +182,9 @@ public class SearchElastic {
                 for (var date : datesBuckets) {
                     String key = (String) date.getKey();
                     int number = (int) date.getDocCount();
-                    t.put(key, number);
+                    if(number != 0){
+                        t.put(key, number);
+                    }
                 }
 
 
