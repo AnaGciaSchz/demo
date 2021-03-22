@@ -17,6 +17,7 @@ import java.util.Map;
  *
  * @Author Ana Garcia
  */
+@SuppressWarnings("rawtypes")
 @Primary
 public class SearchTitle implements BusinessLogicJsonComponent {
 

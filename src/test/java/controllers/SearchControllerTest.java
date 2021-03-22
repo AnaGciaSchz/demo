@@ -255,7 +255,7 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-                assertEquals("Action", genres.get(0));
+                assertEquals("Drama", genres.get(0));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -429,7 +429,7 @@ public class SearchControllerTest {
     }
 
     /**
-     * Test to see if the aggregatitons are shown correctly
+     * Test to see if the aggregations are shown correctly
      */
     @Test
     public void testAggregations() {
@@ -473,7 +473,7 @@ public class SearchControllerTest {
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
-            assertEquals(null, genres);
+            assertEquals(25, genres.size());
             assertEquals(1, types.size());
 
         } catch (JsonProcessingException e) {
@@ -500,7 +500,7 @@ public class SearchControllerTest {
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
             assertEquals(1, genres.size());
-            assertEquals(null, types);
+            assertEquals(8, types.size());
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -549,7 +549,6 @@ public class SearchControllerTest {
             assertEquals(10, map.get("total"));
 
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
-            LinkedHashMap dates = (LinkedHashMap) aggregations.get("dates");
             assertEquals("1997", items.get(0).get("start_year"));
 
         } catch (JsonProcessingException e) {

@@ -5,6 +5,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.hateoas.JsonError;
 import io.micronaut.http.hateoas.Link;
 import io.micronaut.http.annotation.Error;
+import io.micronaut.http.server.exceptions.InternalServerException;
 
 import java.io.IOException;
 
@@ -17,8 +18,13 @@ public class BasicController {
         return HttpResponse.<JsonError>notFound().body(error);
     }
     @Error(global = true)
-    public HttpResponse<JsonError> serveerError(HttpRequest request,  IOException e) {
+    public HttpResponse<JsonError> serverError(HttpRequest request,  IOException e) {
         JsonError error = new JsonError("Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
+
+        return HttpResponse.<JsonError>notFound().body(error);
+    }@Error(global = true)
+    public HttpResponse<JsonError> internaServerError(HttpRequest request,  InternalServerException e) {
+        JsonError error = new JsonError("Internal Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
         return HttpResponse.<JsonError>notFound().body(error);
     }
