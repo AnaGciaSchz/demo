@@ -21,11 +21,11 @@ public class BasicController {
     public HttpResponse<JsonError> serverError(HttpRequest request,  IOException e) {
         JsonError error = new JsonError("Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
-        return HttpResponse.<JsonError>notFound().body(error);
+        return HttpResponse.<JsonError>serverError().body(error);
     }@Error(global = true)
     public HttpResponse<JsonError> internaServerError(HttpRequest request,  InternalServerException e) {
         JsonError error = new JsonError("Internal Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
-        return HttpResponse.<JsonError>notFound().body(error);
+        return HttpResponse.<JsonError>serverError().body(error);
     }
 }

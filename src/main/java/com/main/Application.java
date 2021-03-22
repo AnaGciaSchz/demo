@@ -22,7 +22,7 @@ public class Application {
     public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
-
+/**
  DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
  d.deleteInformation("imdb");
 
@@ -39,7 +39,7 @@ public class Application {
  l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
 
  System.out.println("inserted");
-
+*/
 
     }
 }

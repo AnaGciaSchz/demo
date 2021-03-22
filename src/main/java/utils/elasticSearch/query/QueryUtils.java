@@ -42,10 +42,9 @@ public class QueryUtils implements QueryUtilsInterface {
 
         String[] dates = string.split(",");
 
-        RangeQueryBuilder rangeDates = new RangeQueryBuilder(field);
-
         for (int i = 0; i < dates.length; i++) {
             String[] decade = dates[i].split("/");
+            RangeQueryBuilder rangeDates = new RangeQueryBuilder(field);
             int to = Integer.parseInt(decade[1]);
             int from = Integer.parseInt(decade[0]);
 

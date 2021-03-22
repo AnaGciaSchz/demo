@@ -573,7 +573,7 @@ public class SearchControllerTest {
 
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap dates = (LinkedHashMap) aggregations.get("dates");
-            assertEquals(13, dates.size());
+            assertEquals(1, dates.size());
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

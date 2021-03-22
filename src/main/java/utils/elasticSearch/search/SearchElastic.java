@@ -82,7 +82,7 @@ public class SearchElastic {
         sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType", 11));
 
         if (parameters.get("date") != null) {
-            query.should(queryUtils.datesQuery(parameters.get("date"), "start_year"));
+            query.must(queryUtils.datesQuery(parameters.get("date"), "start_year"));
         }
         sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
 
