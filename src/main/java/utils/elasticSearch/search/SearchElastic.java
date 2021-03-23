@@ -46,11 +46,8 @@ public class SearchElastic {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         searchRequest.indices("imdb");
 
-        if (parameters.keySet().size() == 1) {
-            searchRequest.source(sourceBuilder.query(searchInEveryfield(fields, parameters.get("query"))));
-        } else {
-            searchRequest.source(searchInEveryfieldWithImdbParameters(fields, parameters));
-        }
+        searchRequest.source(searchInEveryfieldWithImdbParameters(fields, parameters));
+
 
         RestHighLevelClient client = elasticSearchUtils.getClientInstance();
         SearchResponse response;
@@ -81,10 +78,12 @@ public class SearchElastic {
         }
         sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType", 11));
 
+        String dates = null;
         if (parameters.get("date") != null) {
             query.must(queryUtils.datesQuery(parameters.get("date"), "start_year"));
+            dates = parameters.get("date");
         }
-        sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
+        sourceBuilder.aggregation(aggregationUtils.datesAggregation(dates,"dateRange", "start_year"));
 
         sourceBuilder.query(query);
         return sourceBuilder;

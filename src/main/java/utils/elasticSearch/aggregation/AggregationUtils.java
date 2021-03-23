@@ -80,17 +80,27 @@ public class AggregationUtils implements AggregationUtilsInterface {
     /**
      * Method that creates the aggregation for the dates aggregations
      *
+     * @param dates Dates to filter, if it's null it shows all decades.
      * @param name  Name of the aggregation
      * @param field Field of the aggregation
      * @return The aggregation
      */
-    public RangeAggregationBuilder datesAggregation(String name, String field) {
+    public RangeAggregationBuilder datesAggregation(String dates,String name, String field) {
         RangeAggregationBuilder aggDates = AggregationBuilders.range(name).field(field);
-
-        for (int i = 0; i < 2021; i += 10) {
-            aggDates.addRange(i, i + 10);
+        if(dates == null) {
+            for (int i = 0; i < 2021; i += 10) {
+                aggDates.addRange(i, i + 10);
+            }
+        }
+        else{
+            String[] decades = dates.split("'");
+            for(int i = 0; i<decades.length;i++){
+                String[] decade = decades[i].split("/");
+                aggDates.addRange(Integer.parseInt(decade[0]),Integer.parseInt(decade[1]));
+            }
         }
         return aggDates;
+
     }
 
     /**

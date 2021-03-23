@@ -38,11 +38,12 @@ public interface AggregationUtilsInterface {
     /**
      * Method that creates the aggregation for the dates aggregations
      *
+     * @param dates Dates to filter, if it's null it shows all decades.
      * @param name  Name of the aggregation
      * @param field Field of the aggregation
      * @return The aggregation
      */
-    RangeAggregationBuilder datesAggregation(String name, String field);
+    RangeAggregationBuilder datesAggregation(String dates, String name, String field);
 
     /**
      * Method that creates the aggregation of a term aggregation
