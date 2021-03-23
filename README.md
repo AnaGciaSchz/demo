@@ -1,3 +1,7 @@
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
+![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg)
 ## Demo search on a IMDb titles index documentation
 
 <!-- ABOUT -->
@@ -72,3 +76,10 @@ Example with more than one parameters:
 ```
 http://localhost:8080/search?query=Kung%20Fu&genre=Action,Drama&type=movie,tvepisode&date=2000/2010,1990/1999
 ```
+
+<!-- CONTACT -->
+## Contact
+
+Ana Mª García Sánchez - [@anamg in Slack - anamg@empathy.co
+
+
