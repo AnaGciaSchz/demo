@@ -1,16 +1,21 @@
-## Micronaut 2.3.2 Documentation
+## Demo search on a IMDb titles index documentation
 
-- [User Guide](https://docs.micronaut.io/2.3.2/guide/index.html)
-- [API Reference](https://docs.micronaut.io/2.3.2/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/2.3.2/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+<!-- ABOUT -->
+## About The Demo
 
-## Feature elasticsearch documentation
+This demo is the result of the search path's sessions about elasticsearch. To develop this project it was used technologies like Java, Micronaut, Docker and, of course, elasticsearch.
 
-- [Micronaut Elasticsearch Driver documentation](https://micronaut-projects.github.io/micronaut-elasticsearch/latest/guide/index.html)
+In this program, you can do different searches in an IMDb index that contains some film titles and information about its genre, type of film or release date. The results will be in JSON format so they can be easily connected with a UI.
 
-## Feature http-client documentation
+<!-- GETTING STARTED -->
+## Getting Started
+Here you can find the steps to run this project.
+### Prerequisites
+First you need to set up the IMDb index. To do so, download the "title.basics.tsv.gz" archive from [this url](https://datasets.imdbws.com/)
+<!-- 
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```-->
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
 
