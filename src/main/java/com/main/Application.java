@@ -22,24 +22,39 @@ public class Application {
     public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
-/**
- DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
- d.deleteInformation("imdb");
 
- System.out.println("deleted");
+    }
 
+    /**
+     * Method that eliminates the imdb db, and creates a new one based on the ./IMDBCreateindex.json scheme and
+     * the titles passed
+     * @param titlesPath Path with the titles of the db
+     * @throws IOException
+     */
+    private static void resetDB(String titlesPath) throws IOException {
+        DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
+        d.deleteInformation("imdb");
 
+        System.out.println("deleted");
 
- CreateElasticSearchIndex c = new CreateElasticSearchIndex();
- c.createImdbIndex("./IMDBCreateIndex.json");
+        createDB(titlesPath);
+    }
 
- System.out.println("created");
+    /**
+     * Method that creates the imdb db based on the ./IMDBCreateindex.json scheme and
+     * the titles passed
+     * @param titlesPath Path with the titles of the db
+     * @throws IOException
+     */
+    private static void createDB(String titlesPath) throws IOException {
+        CreateElasticSearchIndex c = new CreateElasticSearchIndex();
+        c.createImdbIndex("./IMDBCreateIndex.json");
 
- LoadElasticSearchInformation l = new LoadElasticSearchInformation();
- l.loadImdbInformation("/Users/anamariagarciasanchez/Documents/title.basics.tsv");
+        System.out.println("created");
 
- System.out.println("inserted");
-*/
+        LoadElasticSearchInformation l = new LoadElasticSearchInformation();
+        l.loadImdbInformation(titlesPath);
 
+        System.out.println("inserted");
     }
 }
