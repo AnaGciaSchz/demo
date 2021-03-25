@@ -48,6 +48,12 @@ public class LoadElasticSearchInformation {
         elasticSearchUtils.bulkAdd(list);
     }
 
+    /**
+     * Method that gets the list of ratings and creates a map where the key is the index of the title and
+     * the contect is the line of the archive
+     * @param ratings List of lines from the archive
+     * @return Map
+     */
     private Map fromListToMapRatings (List<String > ratings){
         Map<String, List> map = new HashMap();
         for(int i = 0; i<ratings.size();i++){

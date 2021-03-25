@@ -1,5 +1,6 @@
 package com.main;
 
+import DbLogic.ImdbLogic;
 import io.micronaut.runtime.Micronaut;
 import utils.elasticSearch.manageIndex.CreateElasticSearchIndex;
 import utils.elasticSearch.manageIndex.DeleteElasticSearchInformation;
@@ -22,40 +23,8 @@ public class Application {
     public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
-        resetDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
-
-    }
-
-    /**
-     * Method that eliminates the imdb db, and creates a new one based on the ./IMDBCreateindex.json scheme and
-     * the titles passed
-     * @param titlesPath Path with the titles of the db
-     * @throws IOException
-     */
-    private static void resetDB(String titlesPath, String ratingsPath) throws IOException {
-        DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
-        d.deleteInformation("imdb");
-
-        System.out.println("deleted");
-
-        createDB(titlesPath,ratingsPath);
-    }
-
-    /**
-     * Method that creates the imdb db based on the ./IMDBCreateindex.json scheme and
-     * the titles passed
-     * @param titlesPath Path with the titles of the db
-     * @throws IOException
-     */
-    private static void createDB(String titlesPath, String ratingsPath) throws IOException {
-        CreateElasticSearchIndex c = new CreateElasticSearchIndex();
-        c.createImdbIndex("./IMDBCreateIndex.json");
-
-        System.out.println("created");
-
-        LoadElasticSearchInformation l = new LoadElasticSearchInformation();
-        l.loadImdbInformation(titlesPath,ratingsPath);
-
-        System.out.println("inserted");
+        //ImdbLogic imdbLogic = new ImdbLogic();
+        //imdbLogic.resetDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
+        //imdbLogic.createDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
     }
 }

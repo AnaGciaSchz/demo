@@ -33,6 +33,13 @@ public class FileUtil {
         return lines;
     }
 
+    /**
+     * Method that returns the reader os a file so we can read and index at the same time, for example
+     *
+     * @param filePath Path of the file lo read
+     * @return The reader for the file
+     * @throws IOException
+     */
     public BufferedReader getReaderCsv(String filePath) throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
 

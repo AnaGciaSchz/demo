@@ -47,7 +47,7 @@ public class SearchTitle implements BusinessLogicJsonComponent {
      * @param results contains the search result (list) and the aggregations (list)
      * @return a JSON with the total of results and the results
      */
-    private SearchTitlesJson getOkJson(Map<String, Object> results) {
+    private SearchTitlesJson getOkJson(Map<String, Object> results) throws ParseException {
 
         List<Map> hits = (List<Map>) results.get("hits");
 
@@ -56,7 +56,8 @@ public class SearchTitle implements BusinessLogicJsonComponent {
         for (int i = 0; i < hits.size(); i++) {
             Map title = hits.get(i);
             titles[i] = new TitleJson(title.get("index"), title.get("primaryTitle"),
-                    title.get("genres"), title.get("titleType"), title.get("start_year"), title.get("end_year"));
+                    title.get("genres"), title.get("titleType"), title.get("start_year"),
+                    title.get("end_year"), title.get("averageRating"),title.get("numVotes"));
         }
 
         Map<String, Integer> genres = (Map<String, Integer>) results.get("genres");

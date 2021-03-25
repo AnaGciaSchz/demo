@@ -1,8 +1,5 @@
 package utils.parser;
 
-import utils.elasticSearch.ElasticSearchQueryUtils;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +49,13 @@ public class TitlesImdbParser {
 
     }
 
+    /**
+     * Method that returns a map with the necessary content to index the title in the index
+     * @param titleData Date of the title
+     * @param ratingData Data od the rating od the title (If it's null it means there is no information)
+     * @return A Map representing the final data for the json (index, primaryTitle, titleType, genres, start_year.
+     * OPTIONAL: end_year, averageRating, numVotes).
+     */
     private Map<String, Object> returnMapTitle(String[] titleData, List<String> ratingData){
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("index", titleData[0]);
