@@ -7,9 +7,7 @@ import utils.parser.TitlesImdbParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class that loads information to ElasticSearch
@@ -31,14 +29,15 @@ public class LoadElasticSearchInformation {
         List<Object> list = new ArrayList<>();
 
         BufferedReader titleReader = fileutil.getReaderCsv(pathTiles);
-        List<String> ratingsLines = fileutil.readCsv(pathRatings);
-        titleReader.readLine(); //skip the head
+        titleReader.readLine();//skip head
+        Map ratings = fromListToMapRatings(fileutil.readCsv(pathRatings));
         String line = titleReader.readLine();
         int i = 0;
 
         while (line != null) {
-            list.add(parser.getTitlesAndRatings(line.split("\t"),ratingsLines));
-            if (i % 100 == 0) {
+            String[] title = line.split("\t");
+            list.add(parser.getTitlesAndRatings(title, (List<String>) ratings.get(title[0])));
+            if (i % 1000 == 0) {
                 elasticSearchUtils.bulkAdd(list);
                 list = new ArrayList<>();
             }
@@ -47,5 +46,13 @@ public class LoadElasticSearchInformation {
         }
         titleReader.close();
         elasticSearchUtils.bulkAdd(list);
+    }
+
+    private Map fromListToMapRatings (List<String > ratings){
+        Map<String, List> map = new HashMap();
+        for(int i = 0; i<ratings.size();i++){
+            map.put(ratings.get(i).split("\t")[0], Collections.singletonList(ratings.get(i)));
+        }
+        return map;
     }
 }

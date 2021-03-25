@@ -45,21 +45,14 @@ public class TitlesImdbParser {
      * @return a list with all the information
      */
     public Map<String, Object> getTitlesAndRatings(String[] title, List<String> ratings) {
-        String[] ratingData;
-
-        for(int i = 1; i<ratings.size();i++){
-            ratingData = ratings.get(i).split("\t");
-            if (title[0].equals(ratingData[0])){
-                ratings.remove(i);
-                return returnMapTitle(title,ratingData);
-            }
+        if(ratings != null){
+            return returnMapTitle(title,ratings);
         }
-
         return returnMapTitle(title,null);
 
     }
 
-    private Map<String, Object> returnMapTitle(String[] titleData, String[] ratingData){
+    private Map<String, Object> returnMapTitle(String[] titleData, List<String> ratingData){
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("index", titleData[0]);
         jsonMap.put("primaryTitle", titleData[2]);
@@ -70,8 +63,9 @@ public class TitlesImdbParser {
             jsonMap.put("end_year", titleData[6]);
         }
         if (ratingData !=  null) {
-            jsonMap.put("averageRating", ratingData[1]);
-            jsonMap.put("numVotes", ratingData[2]);
+            String[] data = ratingData.get(0).split("\t");
+            jsonMap.put("averageRating", data[1]);
+            jsonMap.put("numVotes", data[2]);
         }
 
         return jsonMap;
