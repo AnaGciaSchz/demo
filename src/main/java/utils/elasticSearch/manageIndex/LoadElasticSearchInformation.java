@@ -5,6 +5,7 @@ import utils.elasticSearch.ElasticSearchUtilsInterface;
 import utils.inout.FileUtil;
 import utils.parser.TitlesImdbParser;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +28,24 @@ public class LoadElasticSearchInformation {
         FileUtil fileutil = new FileUtil();
         TitlesImdbParser parser = new TitlesImdbParser();
         ElasticSearchUtilsInterface elasticSearchUtils = new ElasticSearchQueryUtils();
-
-        List<String> titleLines = fileutil.readCsv(pathTiles);
-        List<String> ratingsLines = fileutil.readCsv(pathRatings);
-
         List<Object> list = new ArrayList<>();
-        for (int i = 1; i < titleLines.size(); i++) {
-            list.add(parser.getTitlesAndRatings(titleLines.get(i).split("\t"),ratingsLines));
+
+        BufferedReader titleReader = fileutil.getReaderCsv(pathTiles);
+        List<String> ratingsLines = fileutil.readCsv(pathRatings);
+        titleReader.readLine(); //skip the head
+        String line = titleReader.readLine();
+        int i = 0;
+
+        while (line != null) {
+            list.add(parser.getTitlesAndRatings(line.split("\t"),ratingsLines));
             if (i % 100 == 0) {
                 elasticSearchUtils.bulkAdd(list);
                 list = new ArrayList<>();
             }
+            i++;
+            line = titleReader.readLine();
         }
+        titleReader.close();
         elasticSearchUtils.bulkAdd(list);
     }
 }

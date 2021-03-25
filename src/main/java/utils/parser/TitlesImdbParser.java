@@ -50,6 +50,7 @@ public class TitlesImdbParser {
         for(int i = 1; i<ratings.size();i++){
             ratingData = ratings.get(i).split("\t");
             if (title[0].equals(ratingData[0])){
+                ratings.remove(i);
                 return returnMapTitle(title,ratingData);
             }
         }

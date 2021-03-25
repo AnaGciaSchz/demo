@@ -32,4 +32,10 @@ public class FileUtil {
         fileReader.close();
         return lines;
     }
+
+    public BufferedReader getReaderCsv(String filePath) throws IOException {
+        BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
+
+        return fileReader;
+    }
 }

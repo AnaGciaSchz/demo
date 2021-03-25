@@ -22,7 +22,7 @@ public class Application {
     public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
-        //resetDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
+        resetDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
 
     }
 
