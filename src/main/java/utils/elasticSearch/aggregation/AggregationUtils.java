@@ -2,11 +2,13 @@ package utils.elasticSearch.aggregation;
 
 import io.micronaut.context.annotation.Primary;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
-import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,18 +87,19 @@ public class AggregationUtils implements AggregationUtilsInterface {
      * @param field Field of the aggregation
      * @return The aggregation
      */
-    public RangeAggregationBuilder datesAggregation(String dates,String name, String field) {
-        RangeAggregationBuilder aggDates = AggregationBuilders.range(name).field(field);
+    public DateRangeAggregationBuilder datesAggregation(String dates, String name, String field) throws ParseException {
+        DateRangeAggregationBuilder aggDates = AggregationBuilders.dateRange(name).field(field).format("yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
         if(dates == null) {
-            for (int i = 0; i < 2021; i += 10) {
-                aggDates.addRange(i, i + 10);
+            for (int i = 1700; i < 2021; i += 10) {
+                aggDates.addRange(""+i,""+(i+10));
             }
         }
         else{
             String[] decades = dates.split("'");
             for(int i = 0; i<decades.length;i++){
                 String[] decade = decades[i].split("/");
-                aggDates.addRange(Integer.parseInt(decade[0]),Integer.parseInt(decade[1]));
+                aggDates.addRange(decade[0],decade[1]);
             }
         }
         return aggDates;

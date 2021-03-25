@@ -22,6 +22,7 @@ public class Application {
     public static void main(String[] args) throws IOException {
 
         Micronaut.run(Application.class, args);
+        //resetDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
 
     }
 
@@ -31,13 +32,13 @@ public class Application {
      * @param titlesPath Path with the titles of the db
      * @throws IOException
      */
-    private static void resetDB(String titlesPath) throws IOException {
+    private static void resetDB(String titlesPath, String ratingsPath) throws IOException {
         DeleteElasticSearchInformation d = new DeleteElasticSearchInformation();
         d.deleteInformation("imdb");
 
         System.out.println("deleted");
 
-        createDB(titlesPath);
+        createDB(titlesPath,ratingsPath);
     }
 
     /**
@@ -46,14 +47,14 @@ public class Application {
      * @param titlesPath Path with the titles of the db
      * @throws IOException
      */
-    private static void createDB(String titlesPath) throws IOException {
+    private static void createDB(String titlesPath, String ratingsPath) throws IOException {
         CreateElasticSearchIndex c = new CreateElasticSearchIndex();
         c.createImdbIndex("./IMDBCreateIndex.json");
 
         System.out.println("created");
 
         LoadElasticSearchInformation l = new LoadElasticSearchInformation();
-        l.loadImdbInformation(titlesPath);
+        l.loadImdbInformation(titlesPath,ratingsPath);
 
         System.out.println("inserted");
     }

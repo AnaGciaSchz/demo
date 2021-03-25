@@ -2,6 +2,8 @@ package components;
 
 import io.micronaut.http.HttpResponse;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
 
 /**
@@ -17,5 +19,5 @@ public interface BusinessLogicJsonComponent {
      * @param parameters List of parameters that need to be in the HttpResponse if there is no problem
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
-    HttpResponse getQueryJson(Map<String, String> parameters);
+    HttpResponse getQueryJson(Map<String, String> parameters) throws IOException, ParseException;
 }

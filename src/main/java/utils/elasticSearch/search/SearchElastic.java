@@ -16,6 +16,7 @@ import utils.elasticSearch.query.QueryUtilsInterface;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -39,7 +40,7 @@ public class SearchElastic {
      * @return A list of the results (size <=10)
      * @throws IOException I there is an error
      */
-    public Map<String, Object> searchImdb(Map<String, String> parameters) throws InternalServerException, IOException {
+    public Map<String, Object> searchImdb(Map<String, String> parameters) throws InternalServerException, IOException, ParseException {
         String[] fields = {"index", "primaryTitle", "genres", "titleType","start_yearText","end_yearText"};
 
         SearchRequest searchRequest = new SearchRequest();
@@ -64,7 +65,7 @@ public class SearchElastic {
      * @param parameters Query and parameters to search
      * @return a builder with the query
      */
-    private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) {
+    private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) throws ParseException {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder query = searchInEveryfield(fields, parameters.get("query"));

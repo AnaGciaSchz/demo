@@ -8,6 +8,7 @@ import utils.elasticSearch.search.SearchElastic;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,20 +31,14 @@ public class SearchTitle implements BusinessLogicJsonComponent {
      * @param parameters List of parameters that need to be in the HttpResponse if there is no problem
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
-    public HttpResponse getQueryJson(Map<String, String> parameters) {
+    public HttpResponse getQueryJson(Map<String, String> parameters) throws IOException, ParseException {
         JsonError error = new JsonError("There was an error, try again with another parameter");
-        try {
-
             if (parameters.get("query") != null) {
                 Map<String, Object> results = searchElastic.searchImdb(parameters);
                 return HttpResponse.ok().body(getOkJson(results));
             }
-        } catch (IOException e) {
-            error = new JsonError("There was an error with the petition, try again");
 
-        }
-
-        return HttpResponse.notFound().body(error);
+            throw new IllegalArgumentException("You need to write a query!");
     }
 
     /**

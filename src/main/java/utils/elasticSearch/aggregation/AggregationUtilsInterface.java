@@ -1,10 +1,11 @@
 package utils.elasticSearch.aggregation;
 
+import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
-import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 
+import java.text.ParseException;
 import java.util.Map;
 
 /**
@@ -43,7 +44,7 @@ public interface AggregationUtilsInterface {
      * @param field Field of the aggregation
      * @return The aggregation
      */
-    RangeAggregationBuilder datesAggregation(String dates, String name, String field);
+    DateRangeAggregationBuilder datesAggregation(String dates, String name, String field) throws ParseException;
 
     /**
      * Method that creates the aggregation of a term aggregation

@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Error;
 import io.micronaut.http.server.exceptions.InternalServerException;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 public class BasicController {
 
@@ -22,10 +23,17 @@ public class BasicController {
         JsonError error = new JsonError("Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
         return HttpResponse.<JsonError>serverError().body(error);
-    }@Error(global = true)
+    }
+    @Error(global = true)
     public HttpResponse<JsonError> internaServerError(HttpRequest request,  InternalServerException e) {
         JsonError error = new JsonError("Internal Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
         return HttpResponse.<JsonError>serverError().body(error);
+    }
+    @Error(global = true)
+    public HttpResponse<JsonError> parseError(HttpRequest request,  ParseException e) {
+        JsonError error = new JsonError("There was an error with the format of the dates, write them like 2000/2010: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
+
+        return HttpResponse.<JsonError>badRequest().body(error);
     }
 }

@@ -10,6 +10,8 @@ import utils.CheckValueInterface;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class SearchController extends BasicController{
      * @return A JSON response
      */
     @Get(produces = MediaType.APPLICATION_JSON)
-    public HttpResponse index(@QueryValue String query, @Nullable @QueryValue String genre, @Nullable @QueryValue String type, @Nullable @QueryValue String date) {
+    public HttpResponse index(@QueryValue String query, @Nullable @QueryValue String genre, @Nullable @QueryValue String type, @Nullable @QueryValue String date) throws IOException, ParseException {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("query", query);
             if (!checkValue.isEmpty(genre)) {

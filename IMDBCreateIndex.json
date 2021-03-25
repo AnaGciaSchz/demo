@@ -20,9 +20,17 @@
         "normalizer": "my_normalizer"
       },
       "start_year": {
-        "type": "integer"
+        "type": "date",
+        "format": "yyyy"
       },
       "end_year": {
+        "type": "date",
+        "format": "yyyy"
+      },
+      "averageRating": {
+        "type": "integer"
+      },
+      "numVotes": {
         "type": "integer"
       },
       "start_yearText": {
