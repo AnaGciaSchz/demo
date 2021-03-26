@@ -2,7 +2,12 @@
 ![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 ![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg)
-## Demo search on a IMDb titles index documentation
+
+<!-- PROJECT LOGO -->
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/49797815/112634739-3fd3ec80-8e3b-11eb-8c3a-977ae26803b7.png" alt="Logo" width="80" height="80">
+</p>
+<h3 align="center">Demo search on a IMDb titles index documentation</h3>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -19,6 +24,7 @@
     </li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#credits">Credits</a></li>
   </ol>
 </details>
 
@@ -106,6 +112,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Ana Mª García Sánchez - [@anamg in Slack - anamg@empathy.co
+Ana Mª García Sánchez - @anamg in Slack - anamg@empathy.co
+
+<!-- CREDITS -->
+## Credits
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
 
