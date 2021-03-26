@@ -4,6 +4,24 @@
 ![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg)
 ## Demo search on a IMDb titles index documentation
 
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li> <a href="#about-the-demo">About The Demo</a></li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setting-the-index">Setting the index</a></li>
+        <li><a href="#executing-the-project">Executing the project</a></li>
+      </ul>
+    </li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
 <!-- ABOUT -->
 ## About The Demo
 
@@ -79,6 +97,11 @@ Example with more than one parameters:
 ```
 http://localhost:8080/search?query=Kung%20Fu&genre=Action,Drama&type=movie,tvepisode&date=2000/2010,1990/1999
 ```
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
