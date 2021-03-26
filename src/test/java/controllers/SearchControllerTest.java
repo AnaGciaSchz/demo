@@ -208,7 +208,7 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-            assertEquals("movie", items.get(0).get("type"));
+            assertEquals("tvEpisode", items.get(0).get("type"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -255,7 +255,7 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-                assertEquals("Drama", genres.get(0));
+                assertEquals("Comedy", genres.get(0));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -382,7 +382,7 @@ public class SearchControllerTest {
             map = mapper.readValue(body2, Map.class);
             items = (ArrayList) map.get("items");
             assertEquals(10, map.get("total"));
-            assertEquals("Força Barça", items.get(0).get("title"));
+            assertEquals("Especial Barça-Madrid", items.get(0).get("title"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

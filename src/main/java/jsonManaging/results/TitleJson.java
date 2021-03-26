@@ -21,8 +21,8 @@ public class TitleJson {
     private final String title;
     private final String[] genres;
     private final String type;
-    private final Date start_year;
-    private final Date end_year;
+    private final String start_year;
+    private final String end_year;
     private final Double average_rating;
     private final Integer num_votes;
 
@@ -37,14 +37,8 @@ public class TitleJson {
         this.title = (String) title;
         this.genres = genresArray;
         this.type = (String) type;
-        this.start_year = format.parse((String) start_year);
-        if(end_year!=null) {
-            this.end_year = format.parse((String) end_year);
-        }
-        else{
-            this.end_year = null;
-        }
-
+        this.start_year = (String) start_year;
+        this.end_year = (String) end_year;
 
         if(average_rating!=null) {
             this.average_rating = Double.parseDouble((String) average_rating);
@@ -78,11 +72,11 @@ public class TitleJson {
         return type;
     }
 
-    public Date getStart_year() {
+    public String getStart_year() {
         return start_year;
     }
 
-    public Date getEnd_year() {
+    public String getEnd_year() {
         return end_year;
     }
 

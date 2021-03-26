@@ -2,9 +2,6 @@ package com.main;
 
 import DbLogic.ImdbLogic;
 import io.micronaut.runtime.Micronaut;
-import utils.elasticSearch.manageIndex.CreateElasticSearchIndex;
-import utils.elasticSearch.manageIndex.DeleteElasticSearchInformation;
-import utils.elasticSearch.manageIndex.LoadElasticSearchInformation;
 
 import java.io.IOException;
 
