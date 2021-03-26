@@ -43,14 +43,17 @@ docker run --rm -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasti
 ```
 ### Setting the index
 
-Then you need to set up the IMDb index. To do so, download the "title.basics.tsv.gz" archive from [this url](https://datasets.imdbws.com/) (it is big, that's why it's not already inserted in the project).
+Then you need to set up the IMDb index. To do so, download the "title.basics.tsv.gz" and the "title.ratings.tsv.gz" files from [this url](https://datasets.imdbws.com/) (They are big, that's why they are not already inserted in the project).
 
-When you are done, open the project and pass it the titles.basics.tsv.gv path and execute the "createDB" method that's in [the Application class](https://github.com/AnaGciaSchz/demoSearch/blob/master/src/main/java/com/main/Application.java) in its main method (just write it down in there and write the path).
+When you are done, open the project and pass it the title.basics.tsv and title.rattings.tsv path and execute the "createDB" method that's in [the Application class](https://github.com/AnaGciaSchz/demoSearch/blob/master/src/main/java/com/main/Application.java) in its main method (just write the paths in the variables and descoment the method).
 
 Example of path:
 ```
 /Users/ana/Documents/title.basics.tsv
 ```
+
+If you want to reinsert the index, just use the resetDB method, it uses the same params as createDB.
+
 When you are done (the console should show you an "inserted" message, it takes some time), you can go to http://localhost:9200/imdb and if everything is correct, you should see a JSON with information about the fields of the index like:
 ``
 "{"imdb":{"aliases":{},"mappings":{"properties":{"end_year":{"type":"integer"}"
