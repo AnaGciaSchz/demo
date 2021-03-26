@@ -18,10 +18,13 @@ public class Application {
      * @param args parameters for the application
      */
     public static void main(String[] args) throws IOException {
+        //write here the files path
+        String titleBasics = ""; //title.basics.tsv
+        String titleRatings = ""; //title.ratings.tsv
 
         Micronaut.run(Application.class, args);
-        //ImdbLogic imdbLogic = new ImdbLogic();
-        //imdbLogic.resetDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
-        //imdbLogic.createDB("/Users/anamariagarciasanchez/Documents/title.basics.tsv","/Users/anamariagarciasanchez/Documents/title.ratings.tsv");
+        ImdbLogic imdbLogic = new ImdbLogic();
+        //imdbLogic.resetDB(titleBasics,titleRatings);
+        imdbLogic.createDB(titleBasics,titleRatings);
     }
 }
