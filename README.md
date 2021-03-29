@@ -59,9 +59,9 @@ To obtain the "id container" just execute:
 docker ps
 ```
 
-and copy the id of the container that you are running.
+and copy the id of the container that you are running. If you use `` docker ps -q `` It will only show you the id of the containers you are running, if you are just running the elasticsearch image, you can use that to get the id easily.
 
-To execute that saved image,m just run:
+To execute that saved image, just run:
 ```
 docker run --rm -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch_imdb:version1
 ```
