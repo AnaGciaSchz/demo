@@ -58,10 +58,13 @@ public class TitlesImdbParser {
      */
     private Map<String, Object> returnMapTitle(String[] titleData, List<String> ratingData){
         Map<String, Object> jsonMap = new HashMap<>();
+
+        String[] genres = titleData[titleData.length - 1].split(",");
+
         jsonMap.put("index", titleData[0]);
         jsonMap.put("primaryTitle", titleData[2]);
         jsonMap.put("titleType", titleData[1]);
-        jsonMap.put("genres", titleData[titleData.length - 1]);
+        jsonMap.put("genres", genres);
         jsonMap.put("start_year", titleData[5]);
         if (!("\\N").equals(titleData[6])) {
             jsonMap.put("end_year", titleData[6]);

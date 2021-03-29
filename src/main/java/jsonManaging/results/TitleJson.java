@@ -7,6 +7,7 @@ import io.micronaut.http.annotation.Produces;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ public class TitleJson {
 
     private final String id;
     private final String title;
-    private final String[] genres;
+    private final ArrayList<String> genres;
     private final String type;
     private final String start_year;
     private final String end_year;
@@ -31,11 +32,10 @@ public class TitleJson {
                      @JsonProperty("genres") Object genres, @JsonProperty("type") Object type,
                      @JsonProperty("start_year") Object start_year, @JsonProperty("end_year") Object end_year,
                      @JsonProperty("average_rating") Object average_rating,@JsonProperty("num_votes") Object num_votes) throws ParseException {
-        String[] genresArray = ((String) genres).split(",");
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
         this.id = (String) id;
         this.title = (String) title;
-        this.genres = genresArray;
+        this.genres = (ArrayList<String>) genres;
         this.type = (String) type;
         this.start_year = (String) start_year;
         this.end_year = (String) end_year;
@@ -64,7 +64,7 @@ public class TitleJson {
         return title;
     }
 
-    public String[] getGenres() {
+    public ArrayList<String> getGenres() {
         return genres;
     }
 
