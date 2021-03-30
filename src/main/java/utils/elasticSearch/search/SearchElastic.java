@@ -89,20 +89,26 @@ public class SearchElastic {
         }
 
         FunctionScoreQueryBuilder functionScore = QueryBuilders.functionScoreQuery(query,
-                ScoreFunctionBuilders.gaussDecayFunction("averageRating", 10, 5, "0d", 0.1));
+                ScoreFunctionBuilders.gaussDecayFunction("start_year", "now", "1200d", "0d", 0.1));
 
        // FunctionScoreQueryBuilder functionScore2 = QueryBuilders.functionScoreQuery(query,
          //       ScoreFunctionBuilders.fieldValueFactorFunction("averageRating").factor(2));
 
-        //disMaxQuery.add(functionScore);
-        //disMaxQuery.add(functionScore2);
+        disMaxQuery.add(query);
+        disMaxQuery.add(functionScore);
 
-        //BoolQueryBuilder builder = new BoolQueryBuilder();
-        //builder.should(QueryBuilders.matchQuery("genre","movie"));
+        BoolQueryBuilder builder = new BoolQueryBuilder();
+        builder.must(QueryBuilders.matchQuery("genre","movie"));
+
+        BoolQueryBuilder prueba = new BoolQueryBuilder();
+        prueba.should(query);
+        prueba.should(builder);
+
+        disMaxQuery.add(prueba);
 
         sourceBuilder.aggregation(aggregationUtils.datesAggregation(dates,"dateRange", "start_year"));
 
-        sourceBuilder.query(functionScore);
+        sourceBuilder.query(disMaxQuery);
         return sourceBuilder;
     }
 
