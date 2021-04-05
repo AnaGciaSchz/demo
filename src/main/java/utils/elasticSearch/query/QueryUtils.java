@@ -45,8 +45,8 @@ public class QueryUtils implements QueryUtilsInterface {
         for (int i = 0; i < dates.length; i++) {
             String[] decade = dates[i].split("/");
             RangeQueryBuilder rangeDates = new RangeQueryBuilder(field).format("yyyy");
-            String to = decade[1];
-            String from = decade[0];
+            String to = decade[1].replace(" ","");
+            String from = decade[0].replace(" ","");
 
             rangeDates.gte(from);
             rangeDates.lte(to);

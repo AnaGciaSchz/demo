@@ -508,7 +508,7 @@ public class SearchControllerTest {
     }
 
     /**
-     * Test to see if the aggregations are shown correctly when the user doesnt want the type
+     * Test to see if the aggregations are shown correctly when the user tests various aggregations
      */
     @Test
     public void testVariousAggregations() {
@@ -581,7 +581,7 @@ public class SearchControllerTest {
     }
 
     /**
-     * Method to get the body of a search with thee search param and possible genre and type aggregations
+     * Method to get the body of a search with the search param and possible genre and type aggregations
      *
      * @param searchTerm term to search
      * @param genre      genre to search

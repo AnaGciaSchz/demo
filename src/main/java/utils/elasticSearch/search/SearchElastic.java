@@ -70,38 +70,51 @@ public class SearchElastic {
     private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) throws ParseException {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
-        BoolQueryBuilder query = searchInEveryfield(fields, parameters.get("query"));
-        BoolQueryBuilder query2 = new BoolQueryBuilder();
-        query2.must(QueryBuilders.matchPhraseQuery("primaryTitle",parameters.get("query")).boost(3)).boost(3);
+        BoolQueryBuilder resultQuery = createQuery(fields,parameters);
 
-        BoolQueryBuilder r = new BoolQueryBuilder();
-        DisMaxQueryBuilder dm = new DisMaxQueryBuilder();
-
-        dm.add(query2);
-
-        FunctionScoreQueryBuilder f = QueryBuilders.functionScoreQuery(query,
-                ScoreFunctionBuilders.linearDecayFunction("averageRatingLogic", 10, 5, "0d", 0.5));
-        dm.add(f);
-
-        r.must(dm);
-        r.should(QueryBuilders.matchQuery("titleType","movie").boost(5));
+        //filters & aggregations
         if (parameters.get("genre") != null) {
-            r.filter(queryUtils.createQuery(parameters.get("genre"), "genres"));
+            resultQuery.filter(queryUtils.createQuery(parameters.get("genre"), "genres"));
         }
         sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
         if (parameters.get("type") != null) {
-            r.filter(queryUtils.createQuery(parameters.get("type"), "titleType"));
+            resultQuery.filter(queryUtils.createQuery(parameters.get("type"), "titleType"));
         }
         sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
 
         if (parameters.get("date") != null) {
-            r.filter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
+            resultQuery.filter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
         }
 
         sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
 
-        sourceBuilder.query(r);
+        sourceBuilder.query(resultQuery);
         return sourceBuilder;
+    }
+
+    /**
+     * Method that creates the structure of the query
+     * @param fields fields to search
+     * @param parameters parameters of the query
+     * @return boolean query
+     */
+    private BoolQueryBuilder createQuery(String[] fields, Map<String, String> parameters){
+        BoolQueryBuilder query = searchInEveryfield(fields, parameters.get("query"));
+        BoolQueryBuilder query2 = new BoolQueryBuilder();
+        query2.must(QueryBuilders.matchPhraseQuery("primaryTitle",parameters.get("query")).boost(3)).boost(3);
+
+        BoolQueryBuilder resultQuery = new BoolQueryBuilder();
+        DisMaxQueryBuilder disMaxQuery = new DisMaxQueryBuilder();
+
+        disMaxQuery.add(query2);
+        FunctionScoreQueryBuilder f = QueryBuilders.functionScoreQuery(query,
+                ScoreFunctionBuilders.linearDecayFunction("averageRatingLogic", 10, 5, "0d", 0.5));
+        disMaxQuery.add(f);
+
+        resultQuery.must(disMaxQuery);
+        resultQuery.should(QueryBuilders.matchQuery("titleType","movie").boost(5));
+
+        return resultQuery;
     }
 
     /**
