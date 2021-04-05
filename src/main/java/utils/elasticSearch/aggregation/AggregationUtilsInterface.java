@@ -39,20 +39,18 @@ public interface AggregationUtilsInterface {
     /**
      * Method that creates the aggregation for the dates aggregations
      *
-     * @param dates Dates to filter, if it's null it shows all decades.
      * @param name  Name of the aggregation
      * @param field Field of the aggregation
      * @return The aggregation
      */
-    DateRangeAggregationBuilder datesAggregation(String dates, String name, String field) throws ParseException;
+    DateRangeAggregationBuilder datesAggregation(String name, String field) throws ParseException;
 
     /**
-     * Method that creates the aggregation of a term aggregation
+     * Method that creates the aggregation of a term aggregation and returns all buckets
      *
      * @param name  Name of the aggregation
      * @param field Field of the aggregation
-     * @param size  Size of the results for the aggregation
      * @return The aggregation
      */
-    TermsAggregationBuilder createAggregation(String name, String field, int size);
+    TermsAggregationBuilder createAggregation(String name, String field);
 }

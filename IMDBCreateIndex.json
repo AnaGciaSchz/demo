@@ -28,9 +28,15 @@
         "format": "yyyy"
       },
       "averageRating": {
-        "type": "integer"
+        "type": "double"
       },
       "numVotes": {
+        "type": "integer"
+      },
+      "averageRatingLogic": {
+        "type": "double"
+      },
+      "numVotesLogic": {
         "type": "integer"
       },
       "start_yearText": {

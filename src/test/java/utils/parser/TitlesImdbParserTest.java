@@ -26,7 +26,7 @@ public class TitlesImdbParserTest {
 
         TitlesImdbParser parser = new TitlesImdbParser();
 
-        Map<String, Object> list = parser.getTitle(linea);
+        Map<String, Object> list = parser.getTitlesAndRatings(linea.split("\t"), null);
 
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("index", "tt0000001");
@@ -47,7 +47,7 @@ public class TitlesImdbParserTest {
 
         TitlesImdbParser parser = new TitlesImdbParser();
 
-        Map<String, Object> list = parser.getTitle(linea);
+        Map<String, Object> list = parser.getTitlesAndRatings(linea.split("\t"),null);
 
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("index", "tt0000001");

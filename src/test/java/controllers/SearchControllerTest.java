@@ -208,7 +208,7 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-            assertEquals("tvEpisode", items.get(0).get("type"));
+            assertEquals("movie", items.get(0).get("type"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -255,7 +255,7 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
             assertEquals("The Avengers", items.get(0).get("title"));
-                assertEquals("Comedy", genres.get(0));
+                assertEquals("Action", genres.get(0));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -382,7 +382,7 @@ public class SearchControllerTest {
             map = mapper.readValue(body2, Map.class);
             items = (ArrayList) map.get("items");
             assertEquals(10, map.get("total"));
-            assertEquals("Especial Barça-Madrid", items.get(0).get("title"));
+            assertEquals("Barça Dreams", items.get(0).get("title"));
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -446,7 +446,7 @@ public class SearchControllerTest {
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
-            assertEquals(1, genres.size());
+            assertEquals(3, genres.size());
             assertEquals(1, types.size());
 
         } catch (JsonProcessingException e) {
@@ -473,7 +473,7 @@ public class SearchControllerTest {
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
-            assertEquals(25, genres.size());
+            assertEquals(27, genres.size());
             assertEquals(1, types.size());
 
         } catch (JsonProcessingException e) {
@@ -499,8 +499,8 @@ public class SearchControllerTest {
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
-            assertEquals(1, genres.size());
-            assertEquals(8, types.size());
+            assertEquals(8, genres.size());
+            assertEquals(5, types.size());
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -525,7 +525,7 @@ public class SearchControllerTest {
             LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             LinkedHashMap genres = (LinkedHashMap) aggregations.get("genres");
             LinkedHashMap types = (LinkedHashMap) aggregations.get("types");
-            assertEquals(1, genres.size());
+            assertEquals(12, genres.size());
             assertEquals(2, types.size());
 
         } catch (JsonProcessingException e) {

@@ -82,39 +82,28 @@ public class AggregationUtils implements AggregationUtilsInterface {
     /**
      * Method that creates the aggregation for the dates aggregations
      *
-     * @param dates Dates to filter, if it's null it shows all decades.
      * @param name  Name of the aggregation
      * @param field Field of the aggregation
      * @return The aggregation
      */
-    public DateRangeAggregationBuilder datesAggregation(String dates, String name, String field) throws ParseException {
+    public DateRangeAggregationBuilder datesAggregation(String name, String field) throws ParseException {
         DateRangeAggregationBuilder aggDates = AggregationBuilders.dateRange(name).field(field).format("yyyy");
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
-        if(dates == null) {
             for (int i = 1700; i < 2021; i += 10) {
                 aggDates.addRange(""+i,""+(i+10));
             }
-        }
-        else{
-            String[] decades = dates.split("'");
-            for(int i = 0; i<decades.length;i++){
-                String[] decade = decades[i].split("/");
-                aggDates.addRange(decade[0],decade[1]);
-            }
-        }
         return aggDates;
 
     }
 
     /**
-     * Method that creates the aggregation of a term aggregation
+     * Method that creates the aggregation of a term aggregation and returns all buckets
      *
      * @param name  Name of the aggregation
      * @param field Field of the aggregation
-     * @param size  Size of the results for the aggregation
      * @return The aggregation
      */
-    public TermsAggregationBuilder createAggregation(String name, String field, int size) {
-        return AggregationBuilders.terms(name).field(field).size(size);
+    public TermsAggregationBuilder createAggregation(String name, String field) {
+        return AggregationBuilders.terms(name).field(field).size(1000);
     }
 }

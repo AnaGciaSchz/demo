@@ -10,30 +10,6 @@ import java.util.Map;
  * @Author Ana Garcia
  */
 public class TitlesImdbParser {
-
-    /**
-     * Method that  parse a title into a list with the id of the title.
-     *
-     * @param title information about the title
-     * @return a map with the information
-     */
-    public Map<String, Object> getTitle(String title) {
-
-        String[] information = title.split("\t");
-
-        Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("index", information[0]);
-        jsonMap.put("primaryTitle", information[2]);
-        jsonMap.put("titleType", information[1]);
-        jsonMap.put("genres", information[information.length - 1]);
-        jsonMap.put("start_year", information[5]);
-        if (!("\\N").equals(information[6])) {
-            jsonMap.put("end_year", information[6]);
-        }
-
-        return jsonMap;
-
-    }
     /**
      * Method that  parse a the titles and its ratings into a list of maps
      *
@@ -73,6 +49,11 @@ public class TitlesImdbParser {
             String[] data = ratingData.get(0).split("\t");
             jsonMap.put("averageRating", data[1]);
             jsonMap.put("numVotes", data[2]);
+            jsonMap.put("averageRatingLogic",data[1]);
+            jsonMap.put("numVotesLogic", data[2]);
+        }else {
+            jsonMap.put("averageRatingLogic",0);
+            jsonMap.put("numVotesLogic", 0);
         }
 
         return jsonMap;

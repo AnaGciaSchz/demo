@@ -2,8 +2,8 @@ package utils.elasticSearch.query;
 
 import io.micronaut.context.annotation.Primary;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 
 import java.text.ParseException;
 
@@ -22,14 +22,11 @@ public class QueryUtils implements QueryUtilsInterface {
      * @param field  Field to search the terms
      * @return map with the query (key=query) and aggregation (key=aggregation)
      */
-    public BoolQueryBuilder createQuery(String string, String field) {
+    public TermsQueryBuilder createQuery(String string, String field) {
         String[] array = string.split(",");
-        BoolQueryBuilder builder = QueryBuilders.boolQuery();
-        for (int i = 0; i < array.length; i++) {
-            builder.should(QueryBuilders.termQuery(field, array[i]));
-        }
+        TermsQueryBuilder terms = new TermsQueryBuilder(field, array);
 
-        return builder;
+        return terms;
     }
 
     /**

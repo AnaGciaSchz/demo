@@ -1,6 +1,7 @@
 package utils.elasticSearch.query;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 
 import java.text.ParseException;
 
@@ -18,7 +19,7 @@ public interface QueryUtilsInterface {
      * @param field  Field to search the terms
      * @return map with the query (key=query) and aggregation (key=aggregation)
      */
-    BoolQueryBuilder createQuery(String string, String field);
+    TermsQueryBuilder createQuery(String string, String field);
 
     /**
      * Method that creates the query of the dates
