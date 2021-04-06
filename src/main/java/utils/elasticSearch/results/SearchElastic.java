@@ -40,7 +40,7 @@ public class SearchElastic {
      *
      * @param parameters Query and parameters that we want to use to search in that index
      * @return A list of the results (size <=10)
-     * @throws IOException I there is an error
+     * @throws IOException If there is an error
      */
     public Map<String, Object> searchImdb(Map<String, String> parameters) throws InternalServerException, IOException, ParseException {
         String[] fields = {"index", "primaryTitle", "genres", "titleType","start_yearText","end_yearText"};
@@ -71,19 +71,25 @@ public class SearchElastic {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder resultQuery = createQuery(fields,parameters);
+        sourceBuilder.query(resultQuery);
 
         //filters & aggregations
         if (parameters.get("genre") != null) {
-            resultQuery.filter(queryUtils.createQuery(parameters.get("genre"), "genres"));
+            sourceBuilder.postFilter(queryUtils.createQuery(parameters.get("genre"), "genres"));
         }
+
         sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
+
+
         if (parameters.get("type") != null) {
-            resultQuery.filter(queryUtils.createQuery(parameters.get("type"), "titleType"));
+            sourceBuilder.postFilter(queryUtils.createQuery(parameters.get("type"), "titleType"));
         }
+
         sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
 
+
         if (parameters.get("date") != null) {
-            resultQuery.filter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
+            sourceBuilder.postFilter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
         }
 
         sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
