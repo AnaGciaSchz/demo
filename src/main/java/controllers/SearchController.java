@@ -36,6 +36,7 @@ public class SearchController extends BasicController{
      * @param query Query that will be used to search using elasticSearch
      * @param genre Genre where the movies should belong (optional)
      * @param type  Type of the media (optional)
+     * @param date Date to filter (optional)
      * @return A JSON response
      */
     @Get(produces = MediaType.APPLICATION_JSON)

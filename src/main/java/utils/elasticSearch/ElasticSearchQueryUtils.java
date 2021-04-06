@@ -4,15 +4,18 @@ import io.micronaut.context.annotation.Primary;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.search.SearchHit;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +76,22 @@ public class ElasticSearchQueryUtils implements ElasticSearchUtilsInterface {
             bulk.add(new IndexRequest("imdb").id((String) map.get("index")).source(map, XContentType.JSON));
         }
         client.bulk(bulk, RequestOptions.DEFAULT);
+    }
+
+    /**
+     * Method that creates the list of hits
+     *
+     * @param response Response of the search
+     * @return The list of hits (size<=10)
+     */
+    @SuppressWarnings("rawtypes")
+    public List<Map> getHits(SearchResponse response) {
+        List<Map> hits = new ArrayList<>();
+
+        for (SearchHit hit : response.getHits()) {
+            hits.add(hit.getSourceAsMap());
+        }
+        return hits;
     }
 
     /**

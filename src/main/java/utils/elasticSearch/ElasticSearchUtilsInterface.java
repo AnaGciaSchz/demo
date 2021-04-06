@@ -1,10 +1,14 @@
 package utils.elasticSearch;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
+import org.elasticsearch.search.SearchHit;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface that represents a class to deal with some ElasticSearch functions like getting the
@@ -40,6 +44,15 @@ public interface ElasticSearchUtilsInterface {
      * @throws IOException if there's an error
      */
     void bulkAdd(List<Object> list) throws IOException;
+
+    /**
+     * Method that creates the list of hits
+     *
+     * @param response Response of the search
+     * @return The list of hits (size<=10)
+     */
+    @SuppressWarnings("rawtypes")
+    List<Map> getHits(SearchResponse response);
 
     /**
      * Method to close the client when the context is closed to free the resources.

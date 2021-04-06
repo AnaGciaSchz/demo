@@ -1,4 +1,4 @@
-package utils.elasticSearch.search;
+package utils.elasticSearch.results;
 
 import io.micronaut.http.server.exceptions.InternalServerException;
 import org.elasticsearch.action.search.SearchRequest;
@@ -140,7 +140,7 @@ public class SearchElastic {
     private Map<String, Object> getHitsAndAggregations(SearchResponse response) {
         Map<String, Object> results = new HashMap<>();
 
-        results.put("hits", getHits(response));
+        results.put("hits", elasticSearchUtils.getHits(response));
 
         if (response.getAggregations() != null) {
             Terms genreTerms = response.getAggregations().get("genreAggregation");
@@ -160,21 +160,5 @@ public class SearchElastic {
             }
         }
         return results;
-    }
-
-    /**
-     * Method that creates the list of hits
-     *
-     * @param response Response of the search
-     * @return The list of hits (size<=10)
-     */
-    @SuppressWarnings("rawtypes")
-    private List<Map> getHits(SearchResponse response) {
-        List<Map> hits = new ArrayList<>();
-
-        for (SearchHit hit : response.getHits()) {
-            hits.add(hit.getSourceAsMap());
-        }
-        return hits;
     }
 }

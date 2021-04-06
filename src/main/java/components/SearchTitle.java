@@ -2,14 +2,12 @@ package components;
 
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.hateoas.JsonError;
-import jsonManaging.results.*;
-import utils.elasticSearch.search.SearchElastic;
+import utils.elasticSearch.results.SearchElastic;
+import utils.json.JsonUtilsInterface;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +23,9 @@ public class SearchTitle implements BusinessLogicJsonComponent {
     @Inject
     SearchElastic searchElastic;
 
+    @Inject
+    JsonUtilsInterface jsonUtils;
+
     /**
      * Method that answers the petition with a HttpResponse
      *
@@ -32,39 +33,11 @@ public class SearchTitle implements BusinessLogicJsonComponent {
      * @return HttpResponse with the parameters if there is no error, if not, it contains a not found
      */
     public HttpResponse getQueryJson(Map<String, String> parameters) throws IOException, ParseException {
-        JsonError error = new JsonError("There was an error, try again with another parameter");
             if (parameters.get("query") != null) {
                 Map<String, Object> results = searchElastic.searchImdb(parameters);
-                return HttpResponse.ok().body(getOkJson(results));
+                return HttpResponse.ok().body(jsonUtils.getOkJson(results));
             }
 
             throw new IllegalArgumentException("You need to write a query!");
-    }
-
-    /**
-     * Method to create the ok response for this url
-     *
-     * @param results contains the search result (list) and the aggregations (list)
-     * @return a JSON with the total of results and the results
-     */
-    private SearchTitlesJson getOkJson(Map<String, Object> results) throws ParseException {
-
-        List<Map> hits = (List<Map>) results.get("hits");
-
-        TitleJson[] titles = new TitleJson[hits.size()];
-
-        for (int i = 0; i < hits.size(); i++) {
-            Map title = hits.get(i);
-            titles[i] = new TitleJson(title.get("index"), title.get("primaryTitle"),
-                    title.get("genres"), title.get("titleType"), title.get("start_year"),
-                    title.get("end_year"), title.get("averageRating"),title.get("numVotes"));
-        }
-
-        Map<String, Integer> genres = (Map<String, Integer>) results.get("genres");
-        Map<String, Integer> types = (Map<String, Integer>) results.get("types");
-        Map<String, Integer> dates = (Map<String, Integer>) results.get("dates");
-
-        AggregationsJson a = new AggregationsJson(genres, types, dates);
-        return new SearchTitlesJson(titles.length, titles, a);
     }
 }

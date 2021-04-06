@@ -25,7 +25,7 @@ public class BasicController {
      * @param e       Error, it contains the exact message
      * @return An HttpResponse with the error to show to the user
      */
-    @Error(global = true)
+    @Error()
     public HttpResponse<JsonError> notFoundError(HttpRequest request, IllegalArgumentException e) {
         JsonError error = new JsonError("Couldn't find a title, maybe there's an illegal argument: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
@@ -39,7 +39,7 @@ public class BasicController {
      * @param e       Error, it contains the exact message
      * @return An HttpResponse with the error to show to the user
      */
-    @Error(global = true)
+    @Error()
     public HttpResponse<JsonError> serverError(HttpRequest request, IOException e) {
         JsonError error = new JsonError("Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
@@ -54,7 +54,7 @@ public class BasicController {
      * @param e       Error, it contains the exact message
      * @return An HttpResponse with the error to show to the user
      */
-    @Error(global = true)
+    @Error()
     public HttpResponse<JsonError> internalServerError(HttpRequest request, InternalServerException e) {
         JsonError error = new JsonError("Internal Server error, try again: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
@@ -69,7 +69,7 @@ public class BasicController {
      * @param e       Error, it contains the exact message
      * @return An HttpResponse with the error to show to the user
      */
-    @Error(global = true)
+    @Error()
     public HttpResponse<JsonError> parseError(HttpRequest request, ParseException e) {
         JsonError error = new JsonError("There was an error with the format of the dates, write them like 2000/2010: " + e.getMessage()).link(Link.SELF, Link.of(request.getUri()));
 
