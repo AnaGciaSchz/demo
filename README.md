@@ -19,9 +19,14 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#setting-the-index">Setting the index</a></li>
-        <li><a href="#executing-the-project">Executing the project</a></li>
       </ul>
     </li>
+    <li><a href="#functionalities-of-the-project">Functionalities of the project</a>
+    <ul>
+      <li><a href="#search-with-query-and-parameters">Search with query and parameters</a></li>
+      <li><a href="#getting-the-top-10-movies">Getting the top 10 movies</a></li>
+    </ul>
+      </li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#credits">Credits</a></li>
@@ -84,7 +89,9 @@ When you are done (the console should show you an "inserted" message, it takes s
 ``
 If you see an error, it means that the IMDb index is not created.
 
-### Executing the project
+## Functionalities of the project
+In this project you can search in the imdb index using several filters or even get the top 10 movies of that index.
+### Search with query and parameters
 
 When the project is running (you can create an index or reset it whenever you want, if you just want to execute the project, delete the calls to that method) you can go to http://localhost:8080/ and start searching.
 
@@ -103,7 +110,12 @@ Example with more than one parameters:
 ```
 http://localhost:8080/search?query=Kung%20Fu&genre=Action,Drama&type=movie,tvepisode&date=2000/2010,1990/1999
 ```
-
+### Getting the top 10 movies
+To get the Top 10 movies of Imdb, sorted by the number of votes and average rating, you just need to execute the project and go to the http://localhost:8080/ url, to the /ranking/movie page:
+```
+http://localhost:8080/ranking/movie
+```
+There you'll find a json containig the information of the sorted movies, without any aggregation.
 <!-- LICENSE -->
 ## License
 
