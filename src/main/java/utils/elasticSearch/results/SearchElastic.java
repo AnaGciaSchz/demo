@@ -8,9 +8,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
@@ -176,10 +174,17 @@ public class SearchElastic {
         results.put("hits", elasticSearchUtils.getHits(response));
 
         ParsedFilter facets = response.getAggregations().get("genreFilter");
+        Terms filteredGenre = null;
+        Terms filteredTypeTerms = null;
+        Range filteredDateRange = null;
+        if(facets != null){
+            filteredGenre = facets.getAggregations().get("genreAggregation");
+            filteredTypeTerms = facets.getAggregations().get("titleTypeAggregation");
+            filteredDateRange = facets.getAggregations().get("dateRange");
+        }
 
         if (response.getAggregations() != null) {
             Terms genreTerms = response.getAggregations().get("genreAggregation");
-            Terms filteredGenre = facets.getAggregations().get("genreAggregation");
             if (filteredGenre != null) {
                     results.put("genres", aggregationUtils.getGenresAggregation(filteredGenre));
             } else {
@@ -189,7 +194,6 @@ public class SearchElastic {
             }
 
             Terms typeTerms = response.getAggregations().get("titleTypeAggregation");
-            Terms filteredTypeTerms = facets.getAggregations().get("titleTypeAggregation");
 
             if (filteredTypeTerms != null) {
                     results.put("types", aggregationUtils.getTypesAggregation(filteredTypeTerms));
@@ -200,9 +204,8 @@ public class SearchElastic {
             }
 
             Range dateRange = response.getAggregations().get("dateRange");
-            Range filteredDaterange = facets.getAggregations().get("dateRange");
-            if (filteredDaterange != null) {
-                    results.put("dates", aggregationUtils.getDatesAggregation(filteredDaterange));
+            if (filteredDateRange != null) {
+                    results.put("dates", aggregationUtils.getDatesAggregation(filteredDateRange));
             } else {
                 if (dateRange != null) {
                     results.put("dates", aggregationUtils.getDatesAggregation(dateRange));
