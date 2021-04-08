@@ -548,7 +548,6 @@ public class SearchControllerTest {
 
             assertEquals(10, map.get("total"));
 
-            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
             assertEquals("1997", items.get(0).get("start_year"));
 
         } catch (JsonProcessingException e) {
@@ -579,6 +578,32 @@ public class SearchControllerTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Test to see if the genre facet is working
+
+    @Test
+    public void testGenreFacet() {
+        body1 = getBody("avengers", null, null,null);
+        body2 = getBody("avengers", "romance", null,null);
+
+        assertNotNull(body);
+
+        try {
+            map = mapper.readValue(body, Map.class);
+            items = (ArrayList) map.get("items");
+
+            assertEquals(10, map.get("total"));
+
+            LinkedHashMap aggregations = (LinkedHashMap) map.get("aggregations");
+            LinkedHashMap dates = (LinkedHashMap) aggregations.get("dates");
+            assertEquals(1, dates.size());
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+     */
 
     /**
      * Method to get the body of a search with the search param and possible genre and type aggregations

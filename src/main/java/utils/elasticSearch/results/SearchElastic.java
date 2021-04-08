@@ -77,54 +77,50 @@ public class SearchElastic {
         BoolQueryBuilder facets = new BoolQueryBuilder();
         BoolQueryBuilder filter = new BoolQueryBuilder();
 
-        boolean theresFacets = false;
+        boolean genre = false;
+        boolean type = false;
+        boolean date = false;
 
         sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
         sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
         sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
 
-        if(parameters.get("genre") != null){
+        if (parameters.get("genre") != null) {
             filter.filter(queryUtils.createQuery(parameters.get("genre"), "genres"));
-            theresFacets = true;
+            type = true;
+            date = true;
             facets.must(queryUtils.createQuery(parameters.get("genre"), "genres"));
         }
 
-        if(parameters.get("type") != null){
+        if (parameters.get("type") != null) {
             filter.filter(queryUtils.createQuery(parameters.get("type"), "titleType"));
-            theresFacets = true;
+            genre = true;
+            date = true;
             facets.must(queryUtils.createQuery(parameters.get("type"), "titleType"));
         }
 
-        if(parameters.get("date") != null){
+        if (parameters.get("date") != null) {
             filter.filter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
-            theresFacets = true;
+            genre = true;
+            type = true;
             facets.must(queryUtils.datesQuery(parameters.get("date"), "start_year"));
         }
 
-        if(theresFacets) {
+        if (genre || type || date) {
             FilterAggregationBuilder genreFilter = AggregationBuilders.filter("genreFilter",
-                    facets)
-                    .subAggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"))
-                    .subAggregation(aggregationUtils.datesAggregation("dateRange", "start_year"))
-                    .subAggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));;
+                    facets);
+            if (type) {
+                genreFilter.subAggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
+            }
+            if (date) {
+                genreFilter.subAggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
+            }
+            if (genre) {
+                genreFilter.subAggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
+            }
             sourceBuilder.postFilter(filter);
             sourceBuilder.aggregation(genreFilter);
         }
-
-        /**
-        if (parameters.get("genre") != null) {
-            FilterAggregationBuilder genreFilter = AggregationBuilders.filter("genreFilter",
-                    queryUtils.createQuery(parameters.get("genre"), "genres"))
-                    .subAggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"))
-                    .subAggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
-
-            sourceBuilder.aggregation(genreFilter);
-        } else {
-            sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
-            sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
-        }
-        sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
-         */
         sourceBuilder.query(resultQuery);
         return sourceBuilder;
     }
@@ -179,27 +175,24 @@ public class SearchElastic {
         Map<String, Object> results = new HashMap<>();
         results.put("hits", elasticSearchUtils.getHits(response));
 
+        ParsedFilter facets = response.getAggregations().get("genreFilter");
+
         if (response.getAggregations() != null) {
             Terms genreTerms = response.getAggregations().get("genreAggregation");
-            ParsedFilter genreFilter = response.getAggregations().get("genreFilter");
-
-            if (genreFilter != null) {
-                Terms filteredGenre = genreFilter.getAggregations().get("genreAggregation");
-                if(filteredGenre != null)
-                results.put("genres", aggregationUtils.getGenresAggregation(filteredGenre));
-            }else {
+            Terms filteredGenre = facets.getAggregations().get("genreAggregation");
+            if (filteredGenre != null) {
+                    results.put("genres", aggregationUtils.getGenresAggregation(filteredGenre));
+            } else {
                 if (genreTerms != null) {
                     results.put("genres", aggregationUtils.getGenresAggregation(genreTerms));
                 }
             }
-            //prueba
-            Terms typeTerms = response.getAggregations().get("titleTypeAggregation");
-            ParsedFilter typeFilter = response.getAggregations().get("genreFilter");
 
-            if (typeFilter != null) {
-                Terms filteredtypeterms = typeFilter.getAggregations().get("titleTypeAggregation");
-                if(filteredtypeterms != null)
-                results.put("types", aggregationUtils.getTypesAggregation(filteredtypeterms));
+            Terms typeTerms = response.getAggregations().get("titleTypeAggregation");
+            Terms filteredTypeTerms = facets.getAggregations().get("titleTypeAggregation");
+
+            if (filteredTypeTerms != null) {
+                    results.put("types", aggregationUtils.getTypesAggregation(filteredTypeTerms));
             } else {
                 if (typeTerms != null) {
                     results.put("types", aggregationUtils.getTypesAggregation(typeTerms));
@@ -207,11 +200,9 @@ public class SearchElastic {
             }
 
             Range dateRange = response.getAggregations().get("dateRange");
-            ParsedFilter dateFilter = response.getAggregations().get("genreFilter");
-            if (dateFilter != null) {
-                Range filteredDaterange = dateFilter.getAggregations().get("dateRange");
-                if(filteredDaterange != null)
-                results.put("dates", aggregationUtils.getDatesAggregation(filteredDaterange));
+            Range filteredDaterange = facets.getAggregations().get("dateRange");
+            if (filteredDaterange != null) {
+                    results.put("dates", aggregationUtils.getDatesAggregation(filteredDaterange));
             } else {
                 if (dateRange != null) {
                     results.put("dates", aggregationUtils.getDatesAggregation(dateRange));
