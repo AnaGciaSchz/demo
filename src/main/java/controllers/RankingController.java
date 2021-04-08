@@ -12,7 +12,6 @@ import java.text.ParseException;
 
 /**
  * Controller that answers the /ranking/movie url with the ranking of the movies
- * <p>
  * Author Ana Garcia
  */
 @Controller("/ranking/movie")
