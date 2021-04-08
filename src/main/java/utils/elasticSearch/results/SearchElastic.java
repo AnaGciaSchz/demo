@@ -9,6 +9,10 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -43,7 +47,7 @@ public class SearchElastic {
      * @throws IOException If there is an error
      */
     public Map<String, Object> searchImdb(Map<String, String> parameters) throws InternalServerException, IOException, ParseException {
-        String[] fields = {"index", "primaryTitle", "genres", "titleType","start_yearText","end_yearText"};
+        String[] fields = {"index", "primaryTitle", "genres", "titleType", "start_yearText", "end_yearText"};
 
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -70,29 +74,32 @@ public class SearchElastic {
     private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) throws ParseException {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
-        BoolQueryBuilder resultQuery = createQuery(fields,parameters);
-        sourceBuilder.query(resultQuery);
+        BoolQueryBuilder resultQuery = createQuery(fields, parameters);
 
         //filters & aggregations
         if (parameters.get("genre") != null) {
             sourceBuilder.postFilter(queryUtils.createQuery(parameters.get("genre"), "genres"));
+
+            FilterAggregationBuilder genreFilter = AggregationBuilders.filter("genreFilter",
+                    queryUtils.createQuery(parameters.get("genre"), "genres"))
+                    .subAggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"))
+                    .subAggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
+
+            sourceBuilder.aggregation(genreFilter);
+        }else{
+            sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
+            sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
         }
-
         sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
-
 
         if (parameters.get("type") != null) {
             sourceBuilder.postFilter(queryUtils.createQuery(parameters.get("type"), "titleType"));
         }
 
-        sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
-
 
         if (parameters.get("date") != null) {
             sourceBuilder.postFilter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
         }
-
-        sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
 
         sourceBuilder.query(resultQuery);
         return sourceBuilder;
@@ -100,14 +107,15 @@ public class SearchElastic {
 
     /**
      * Method that creates the structure of the query
-     * @param fields fields to search
+     *
+     * @param fields     fields to search
      * @param parameters parameters of the query
      * @return boolean query
      */
-    private BoolQueryBuilder createQuery(String[] fields, Map<String, String> parameters){
+    private BoolQueryBuilder createQuery(String[] fields, Map<String, String> parameters) {
         BoolQueryBuilder query = searchInEveryfield(fields, parameters.get("query"));
         BoolQueryBuilder query2 = new BoolQueryBuilder();
-        query2.must(QueryBuilders.matchPhraseQuery("primaryTitle",parameters.get("query")).boost(3)).boost(3);
+        query2.must(QueryBuilders.matchPhraseQuery("primaryTitle", parameters.get("query")).boost(3)).boost(3);
 
         BoolQueryBuilder resultQuery = new BoolQueryBuilder();
         DisMaxQueryBuilder disMaxQuery = new DisMaxQueryBuilder();
@@ -118,7 +126,7 @@ public class SearchElastic {
         disMaxQuery.add(f);
 
         resultQuery.must(disMaxQuery);
-        resultQuery.should(QueryBuilders.matchQuery("titleType","movie").boost(5));
+        resultQuery.should(QueryBuilders.matchQuery("titleType", "movie").boost(5));
 
         return resultQuery;
     }
@@ -145,7 +153,6 @@ public class SearchElastic {
      */
     private Map<String, Object> getHitsAndAggregations(SearchResponse response) {
         Map<String, Object> results = new HashMap<>();
-
         results.put("hits", elasticSearchUtils.getHits(response));
 
         if (response.getAggregations() != null) {
@@ -154,15 +161,28 @@ public class SearchElastic {
             if (genreTerms != null) {
                 results.put("genres", aggregationUtils.getGenresAggregation(genreTerms));
             }
-
+            //prueba
             Terms typeTerms = response.getAggregations().get("titleTypeAggregation");
             if (typeTerms != null) {
                 results.put("types", aggregationUtils.getTypesAggregation(typeTerms));
+            }else{
+                ParsedFilter typeFilter = response.getAggregations().get("genreFilter");
+                Terms filteredtypeterms = typeFilter.getAggregations().get("titleTypeAggregation");
+                if (filteredtypeterms != null) {
+                    results.put("types", aggregationUtils.getTypesAggregation(filteredtypeterms));
+                }
             }
 
             Range dateRange = response.getAggregations().get("dateRange");
             if (dateRange != null) {
                 results.put("dates", aggregationUtils.getDatesAggregation(dateRange));
+            }
+            else{
+                ParsedFilter dateFilter = response.getAggregations().get("genreFilter");
+                Range filteredDaterange = dateFilter.getAggregations().get("dateRange");
+                if (filteredDaterange != null) {
+                    results.put("dates", aggregationUtils.getDatesAggregation(filteredDaterange));
+                }
             }
         }
         return results;

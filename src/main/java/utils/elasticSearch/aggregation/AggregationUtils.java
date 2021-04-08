@@ -2,6 +2,7 @@ package utils.elasticSearch.aggregation;
 
 import io.micronaut.context.annotation.Primary;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -56,6 +57,19 @@ public class AggregationUtils implements AggregationUtilsInterface {
             int number = (int) type.getDocCount();
             types.put(key, number);
         }
+        return types;
+    }
+
+    public Map<String, Integer> getTypesFilterAggregation(Filter typeTerms) {
+        Map<String, Integer> types = new HashMap();
+        var typesBuckets =  typeTerms.getAggregations();
+/**
+        for (var type : typesBuckets) {
+            String key = (String) type.getKey();
+            int number = (int) type.getDocCount();
+            types.put(key, number);
+        }
+ */
         return types;
     }
 

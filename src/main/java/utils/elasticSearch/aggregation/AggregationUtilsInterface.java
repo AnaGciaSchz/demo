@@ -1,5 +1,6 @@
 package utils.elasticSearch.aggregation;
 
+import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -27,6 +28,8 @@ public interface AggregationUtilsInterface {
      * @return The list of aggregations
      */
     Map<String, Integer> getTypesAggregation(Terms typeTerms);
+
+    Map<String, Integer> getTypesFilterAggregation(Filter typeTerms);
 
     /**
      * Method that creates the aggregation for the dates
