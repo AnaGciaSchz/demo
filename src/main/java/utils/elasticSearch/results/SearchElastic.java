@@ -50,7 +50,6 @@ public class SearchElastic {
         String[] fields = {"index", "primaryTitle", "genres", "titleType", "start_yearText", "end_yearText"};
 
         SearchRequest searchRequest = new SearchRequest();
-        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         searchRequest.indices("imdb");
 
         searchRequest.source(searchInEveryfieldWithImdbParameters(fields, parameters));
@@ -75,32 +74,57 @@ public class SearchElastic {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder resultQuery = createQuery(fields, parameters);
+        BoolQueryBuilder facets = new BoolQueryBuilder();
+        BoolQueryBuilder filter = new BoolQueryBuilder();
 
-        //filters & aggregations
+        boolean theresFacets = false;
+
+        sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
+        sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
+        sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
+
+        if(parameters.get("genre") != null){
+            filter.filter(queryUtils.createQuery(parameters.get("genre"), "genres"));
+            theresFacets = true;
+            facets.must(queryUtils.createQuery(parameters.get("genre"), "genres"));
+        }
+
+        if(parameters.get("type") != null){
+            filter.filter(queryUtils.createQuery(parameters.get("type"), "titleType"));
+            theresFacets = true;
+            facets.must(queryUtils.createQuery(parameters.get("type"), "titleType"));
+        }
+
+        if(parameters.get("date") != null){
+            filter.filter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
+            theresFacets = true;
+            facets.must(queryUtils.datesQuery(parameters.get("date"), "start_year"));
+        }
+
+        if(theresFacets) {
+            FilterAggregationBuilder genreFilter = AggregationBuilders.filter("genreFilter",
+                    facets)
+                    .subAggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"))
+                    .subAggregation(aggregationUtils.datesAggregation("dateRange", "start_year"))
+                    .subAggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));;
+            sourceBuilder.postFilter(filter);
+            sourceBuilder.aggregation(genreFilter);
+        }
+
+        /**
         if (parameters.get("genre") != null) {
-            sourceBuilder.postFilter(queryUtils.createQuery(parameters.get("genre"), "genres"));
-
             FilterAggregationBuilder genreFilter = AggregationBuilders.filter("genreFilter",
                     queryUtils.createQuery(parameters.get("genre"), "genres"))
                     .subAggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"))
                     .subAggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
 
             sourceBuilder.aggregation(genreFilter);
-        }else{
+        } else {
             sourceBuilder.aggregation(aggregationUtils.createAggregation("titleTypeAggregation", "titleType"));
             sourceBuilder.aggregation(aggregationUtils.datesAggregation("dateRange", "start_year"));
         }
         sourceBuilder.aggregation(aggregationUtils.createAggregation("genreAggregation", "genres"));
-
-        if (parameters.get("type") != null) {
-            sourceBuilder.postFilter(queryUtils.createQuery(parameters.get("type"), "titleType"));
-        }
-
-
-        if (parameters.get("date") != null) {
-            sourceBuilder.postFilter(queryUtils.datesQuery(parameters.get("date"), "start_year"));
-        }
-
+         */
         sourceBuilder.query(resultQuery);
         return sourceBuilder;
     }
@@ -157,31 +181,40 @@ public class SearchElastic {
 
         if (response.getAggregations() != null) {
             Terms genreTerms = response.getAggregations().get("genreAggregation");
+            ParsedFilter genreFilter = response.getAggregations().get("genreFilter");
 
-            if (genreTerms != null) {
-                results.put("genres", aggregationUtils.getGenresAggregation(genreTerms));
+            if (genreFilter != null) {
+                Terms filteredGenre = genreFilter.getAggregations().get("genreAggregation");
+                if(filteredGenre != null)
+                results.put("genres", aggregationUtils.getGenresAggregation(filteredGenre));
+            }else {
+                if (genreTerms != null) {
+                    results.put("genres", aggregationUtils.getGenresAggregation(genreTerms));
+                }
             }
             //prueba
             Terms typeTerms = response.getAggregations().get("titleTypeAggregation");
-            if (typeTerms != null) {
-                results.put("types", aggregationUtils.getTypesAggregation(typeTerms));
-            }else{
-                ParsedFilter typeFilter = response.getAggregations().get("genreFilter");
+            ParsedFilter typeFilter = response.getAggregations().get("genreFilter");
+
+            if (typeFilter != null) {
                 Terms filteredtypeterms = typeFilter.getAggregations().get("titleTypeAggregation");
-                if (filteredtypeterms != null) {
-                    results.put("types", aggregationUtils.getTypesAggregation(filteredtypeterms));
+                if(filteredtypeterms != null)
+                results.put("types", aggregationUtils.getTypesAggregation(filteredtypeterms));
+            } else {
+                if (typeTerms != null) {
+                    results.put("types", aggregationUtils.getTypesAggregation(typeTerms));
                 }
             }
 
             Range dateRange = response.getAggregations().get("dateRange");
-            if (dateRange != null) {
-                results.put("dates", aggregationUtils.getDatesAggregation(dateRange));
-            }
-            else{
-                ParsedFilter dateFilter = response.getAggregations().get("genreFilter");
+            ParsedFilter dateFilter = response.getAggregations().get("genreFilter");
+            if (dateFilter != null) {
                 Range filteredDaterange = dateFilter.getAggregations().get("dateRange");
-                if (filteredDaterange != null) {
-                    results.put("dates", aggregationUtils.getDatesAggregation(filteredDaterange));
+                if(filteredDaterange != null)
+                results.put("dates", aggregationUtils.getDatesAggregation(filteredDaterange));
+            } else {
+                if (dateRange != null) {
+                    results.put("dates", aggregationUtils.getDatesAggregation(dateRange));
                 }
             }
         }

@@ -29,8 +29,6 @@ public interface AggregationUtilsInterface {
      */
     Map<String, Integer> getTypesAggregation(Terms typeTerms);
 
-    Map<String, Integer> getTypesFilterAggregation(Filter typeTerms);
-
     /**
      * Method that creates the aggregation for the dates
      *

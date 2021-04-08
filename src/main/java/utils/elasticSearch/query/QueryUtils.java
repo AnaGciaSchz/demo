@@ -52,6 +52,7 @@ public class QueryUtils implements QueryUtilsInterface {
             rangeDates.lte(to);
             datesQuery.should(rangeDates);
         }
+
         return datesQuery;
     }
 }

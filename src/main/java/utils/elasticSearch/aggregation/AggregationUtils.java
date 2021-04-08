@@ -60,19 +60,6 @@ public class AggregationUtils implements AggregationUtilsInterface {
         return types;
     }
 
-    public Map<String, Integer> getTypesFilterAggregation(Filter typeTerms) {
-        Map<String, Integer> types = new HashMap();
-        var typesBuckets =  typeTerms.getAggregations();
-/**
-        for (var type : typesBuckets) {
-            String key = (String) type.getKey();
-            int number = (int) type.getDocCount();
-            types.put(key, number);
-        }
- */
-        return types;
-    }
-
     /**
      * Method that creates the aggregation for the dates
      *
