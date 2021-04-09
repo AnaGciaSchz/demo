@@ -26,12 +26,15 @@ public class TitleJson {
     private final String end_year;
     private final Double average_rating;
     private final Integer num_votes;
+    private final Double average_ratingLogic;
+    private final Integer num_votesLogic;
 
     @JsonCreator
     public TitleJson(@JsonProperty("id") Object id, @JsonProperty("title") Object title,
                      @JsonProperty("genres") Object genres, @JsonProperty("type") Object type,
                      @JsonProperty("start_year") Object start_year, @JsonProperty("end_year") Object end_year,
-                     @JsonProperty("average_rating") Object average_rating,@JsonProperty("num_votes") Object num_votes) throws ParseException {
+                     @JsonProperty("average_rating") Object average_rating,@JsonProperty("num_votes") Object num_votes,
+                     @JsonProperty ("averageRatingLogic") Object averageRatingLogic, @JsonProperty("numVotesLogic") Object numVotesLogic) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
         this.id = (String) id;
         this.title = (String) title;
@@ -42,17 +45,21 @@ public class TitleJson {
 
         if(average_rating!=null) {
             this.average_rating = Double.parseDouble((String) average_rating);
+            this.average_ratingLogic = this.average_rating;
         }
         else{
             this.average_rating = null;
+            this.average_ratingLogic = 0.0;
         }
 
 
         if(num_votes!=null) {
             this.num_votes = Integer.parseInt((String) num_votes);
+            this.num_votesLogic = this.num_votes;
         }
         else{
             this.num_votes = null;
+            this.num_votesLogic = 0;
         }
     }
 
@@ -83,4 +90,8 @@ public class TitleJson {
     public Double getAverage_rating() { return average_rating;}
 
     public Integer getNum_votes() { return num_votes;}
+
+    public Double getAverage_ratingLogic() { return average_ratingLogic;}
+
+    public Integer getNum_votesLogic() { return num_votesLogic;}
 }

@@ -33,7 +33,8 @@ public class JsonUtilsImdb implements JsonUtilsInterface {
             Map title = hits.get(i);
             titles[i] = new TitleJson(title.get("index"), title.get("primaryTitle"),
                     title.get("genres"), title.get("titleType"), title.get("start_year"),
-                    title.get("end_year"), title.get("averageRating"), title.get("numVotes"));
+                    title.get("end_year"), title.get("averageRating"), title.get("numVotes"),
+                    title.get("averageRatingLogic"),title.get("numVotesLogic"));
         }
 
         Map<String, Integer> genres = (Map<String, Integer>) results.get("genres");
