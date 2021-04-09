@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.Map;
 
 /**
- * Logic to anwres to the /titles/{titleId} request
+ * Logic to answers to the /titles/{titleId} request
  *
  * @Author Ana Garcia
  */

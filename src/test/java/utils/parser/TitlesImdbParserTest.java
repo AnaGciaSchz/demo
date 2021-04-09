@@ -35,7 +35,10 @@ public class TitlesImdbParserTest {
         jsonMap.put("genres", "Documentary,Short");
         jsonMap.put("start_year", "1894");
 
-        assertEquals(jsonMap, list);
+        assertEquals(jsonMap.get("index"), list.get("index"));
+        assertEquals(jsonMap.get("primaryTitle"), list.get("primaryTitle"));
+        assertEquals(jsonMap.get("titleType"), list.get("titleType"));
+        assertEquals(jsonMap.get("start_year"), list.get("start_year"));
     }
 
     /**
@@ -57,6 +60,9 @@ public class TitlesImdbParserTest {
         jsonMap.put("start_year", "1894");
         jsonMap.put("end_year", "1895");
 
-        assertEquals(jsonMap, list);
+        assertEquals(jsonMap.get("index"), list.get("index"));
+        assertEquals(jsonMap.get("primaryTitle"), list.get("primaryTitle"));
+        assertEquals(jsonMap.get("titleType"), list.get("titleType"));
+        assertEquals(jsonMap.get("start_year"), list.get("start_year"));
     }
 }
