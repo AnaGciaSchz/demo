@@ -25,6 +25,7 @@
     <ul>
       <li><a href="#search-with-query-and-parameters">Search with query and parameters</a></li>
       <li><a href="#getting-the-top-10-movies">Getting the top 10 movies</a></li>
+      <li><a href="#find-a-movie-using-its-id">Find a movie using its id</a></li>
     </ul>
       </li>
     <li><a href="#license">License</a></li>
@@ -55,10 +56,10 @@ docker run --rm -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker
 I recommend saving that image after setting the index (this way you won't have to fill the index each time you execute it):
 
 ```
-docker commit “id container” elasticsearch_imdb:version1
+docker commit <id container> elasticsearch_imdb:version1
 ```
 
-To obtain the "id container" just execute:
+To obtain the <id container> just execute:
 
 ```
 docker ps
@@ -116,6 +117,23 @@ To get the Top 10 movies of Imdb, sorted by the number of votes and average rati
 http://localhost:8080/ranking/movie
 ```
 There you'll find a json containig the information of the sorted movies, without any aggregation.
+
+### Find a movie using its id
+
+Although you can search a movie by its id using the `` /search `` url, there's an special url that is meant to be used by the frontend. That url is:
+```
+http://localhost:8080/titles/<titleId>
+```
+So to acces to just a movie using it's id you just need to go to that url and write it in <titleId>. It can be the full id or only the numeric part:
+  
+ ```
+http://localhost:8080/titles/tt0000001
+ or
+http://localhost:8080/titles/0000001
+```
+The numbers are the important part, so it's necessary that you write all the 0's.
+
+That url should return a movie called "Carmencita", from 1894.
 <!-- LICENSE -->
 ## License
 
