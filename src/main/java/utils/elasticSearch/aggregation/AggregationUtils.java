@@ -10,9 +10,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class that creates and returns aggregations
@@ -28,8 +26,8 @@ public class AggregationUtils implements AggregationUtilsInterface {
      * @param genreTerms terms of the response for the genre
      * @return The list of aggregations
      */
-    public Map<String, Integer> getGenresAggregation(Terms genreTerms) {
-        Map<String, Integer> genres = new HashMap();
+    public SortedMap<String, Integer> getGenresAggregation(Terms genreTerms) {
+        SortedMap<String, Integer> genres = new TreeMap();
         Collection<Terms.Bucket> genreBuckets = (Collection<Terms.Bucket>) genreTerms.getBuckets();
 
         for (var genre : genreBuckets) {
@@ -48,8 +46,8 @@ public class AggregationUtils implements AggregationUtilsInterface {
      * @param typeTerms terms of the response for the type
      * @return The list of aggregations
      */
-    public Map<String, Integer> getTypesAggregation(Terms typeTerms) {
-        Map<String, Integer> types = new HashMap();
+    public SortedMap<String, Integer> getTypesAggregation(Terms typeTerms) {
+        SortedMap<String, Integer> types = new TreeMap();
         Collection<Terms.Bucket> typesBuckets = (Collection<Terms.Bucket>) typeTerms.getBuckets();
 
         for (var type : typesBuckets) {
@@ -66,8 +64,8 @@ public class AggregationUtils implements AggregationUtilsInterface {
      * @param dateRange range of the response for the date
      * @return The list of aggregations
      */
-    public Map<String, Integer> getDatesAggregation(Range dateRange) {
-        Map<String, Integer> dates = new HashMap();
+    public SortedMap<String, Integer> getDatesAggregation(Range dateRange) {
+        SortedMap<String, Integer> dates = new TreeMap<>();
         Collection<Range.Bucket> datesBuckets = (Collection<Range.Bucket>) dateRange.getBuckets();
 
         for (var date : datesBuckets) {

@@ -111,11 +111,11 @@ public class SearchElastic {
             if(facetsType == null){
                 facetsType = new BoolQueryBuilder();
             }
-            facetsType.must(queryUtils.createQuery(parameters.get("date"), "start_year"));
+            facetsType.must(queryUtils.datesQuery(parameters.get("date"), "start_year"));
             if(facetsGenre == null){
                 facetsGenre = new BoolQueryBuilder();
             }
-            facetsGenre.must(queryUtils.createQuery(parameters.get("date"), "start_year"));
+            facetsGenre.must(queryUtils.datesQuery(parameters.get("date"), "start_year"));
         }
 
             if (facetsGenre != null) {
