@@ -14,6 +14,9 @@ import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder;
 import utils.elasticSearch.ElasticSearchUtilsInterface;
 import utils.elasticSearch.aggregation.AggregationUtilsInterface;
 import utils.elasticSearch.query.QueryUtilsInterface;
@@ -68,8 +71,9 @@ public class SearchElastic {
      * @param parameters Query and parameters to search
      * @return a builder with the query
      */
-    private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) throws ParseException {
+    private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) throws ParseException, IOException {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        PhraseSuggestionBuilder psb = new PhraseSuggestionBuilder("primaryTitle");
 
         BoolQueryBuilder resultQuery = createQuery(fields, parameters);
         BoolQueryBuilder facetsGenre = null;
@@ -138,6 +142,7 @@ public class SearchElastic {
             }
             sourceBuilder.postFilter(filter);
         sourceBuilder.query(resultQuery);
+        sourceBuilder.suggest(new SuggestBuilder().setGlobalText(parameters.get("query")).addSuggestion("did_you_mean", psb));
         return sourceBuilder;
     }
 
@@ -190,6 +195,13 @@ public class SearchElastic {
     private Map<String, Object> getHitsAndAggregations(SearchResponse response) {
         Map<String, Object> results = new HashMap<>();
         results.put("hits", elasticSearchUtils.getHits(response));
+
+        ArrayList<String> suggestions = new ArrayList();
+        var suggestEntries = response.getSuggest().getSuggestion("did_you_mean").getEntries();
+        for(int i = 0; i<suggestEntries.get(0).getOptions().size();i++){
+           suggestions.add(suggestEntries.get(0).getOptions().get(i).getText().toString());
+       }
+        results.put("suggestion",suggestions);
 
         ParsedFilter facetGenre = response.getAggregations().get("genreFilter");
         ParsedFilter facetType = response.getAggregations().get("typeFilter");

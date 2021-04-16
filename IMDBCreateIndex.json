@@ -74,7 +74,9 @@
             "lowercase",
             "word-delimiter-custom",
             "flatten_graph",
-            "spanish_stemmer"
+            "spanish_stemmer",
+            "shingle",
+            "reverse"
           ]
         },
         "title_analyzer": {
@@ -90,11 +92,18 @@
             "word-delimiter-custom",
             "flatten_graph",
             "my_ascii_folding",
-            "spanish_stemmer"
+            "spanish_stemmer",
+            "shingle",
+            "reverse"
           ]
         }
       },
       "filter": {
+        "shingle" : {
+          "type": "shingle",
+          "min_shingle_size": 2,
+          "max_shingle_size": 3
+        },
         "spanish_stemmer": {
           "type": "stemmer",
           "language": "spanish"
