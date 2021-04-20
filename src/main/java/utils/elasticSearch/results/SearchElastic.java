@@ -14,7 +14,6 @@ import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.suggest.Suggest;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder;
 import utils.elasticSearch.ElasticSearchUtilsInterface;
@@ -73,6 +72,7 @@ public class SearchElastic {
      */
     private SearchSourceBuilder searchInEveryfieldWithImdbParameters(String[] fields, Map<String, String> parameters) throws ParseException, IOException {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        char quotes ='"';
         PhraseSuggestionBuilder psb = new PhraseSuggestionBuilder("primaryTitle");
 
         BoolQueryBuilder resultQuery = createQuery(fields, parameters);

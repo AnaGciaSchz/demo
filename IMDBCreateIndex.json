@@ -74,9 +74,7 @@
             "lowercase",
             "word-delimiter-custom",
             "flatten_graph",
-            "spanish_stemmer",
-            "shingle",
-            "reverse"
+            "spanish_stemmer"
           ]
         },
         "title_analyzer": {
@@ -92,9 +90,7 @@
             "word-delimiter-custom",
             "flatten_graph",
             "my_ascii_folding",
-            "spanish_stemmer",
-            "shingle",
-            "reverse"
+            "spanish_stemmer"
           ]
         }
       },

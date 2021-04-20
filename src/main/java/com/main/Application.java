@@ -24,7 +24,7 @@ public class Application {
 
         Micronaut.run(Application.class, args);
         ImdbLogic imdbLogic = new ImdbLogic();
-        //imdbLogic.resetDB(titleBasics,titleRatings);
+        imdbLogic.resetDB(titleBasics,titleRatings);
         //imdbLogic.createDB(titleBasics,titleRatings);
     }
 }
